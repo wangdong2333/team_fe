@@ -12,7 +12,7 @@
         <el-button
           size="mini"
           type="danger"
-          @click="handleDelete(scope.$index, scope.row)"
+          @click="handleDelete(scope.row)"
           >删除</el-button
         >
       </template>
@@ -42,9 +42,29 @@ export default {
     handleEdit(index, row) {
       console.log(index, row);
     },
-    handleDelete(index, row) {
-      console.log(index, row);
-    },
+    handleDelete(item) {
+      // console.log(index, row);
+      this.$confirm("此操作将永久删除该地址, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          delAddress({ addressid: item.addressid }).then((res) => {
+            this.$message({
+              type: "success",
+              message: "删除成功!",
+            });
+            this.getList();
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },      
   },
 };
 </script>
