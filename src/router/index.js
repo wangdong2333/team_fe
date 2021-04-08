@@ -114,6 +114,25 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/transfer',
+    component: Layout,
+    meta: { title: '团队转会', icon: 'form' },
+    children: [
+      {
+        path: 'list',
+        name: 'TransferList',
+        component: () => import('@/views/transfer/list'),
+        meta: { title: '转会信息', icon: 'form' }
+      },
+      {
+        path: 'add',
+        name: 'TransferAdd',
+        component: () => import('@/views/transfer/add'),
+        meta: { title: '添加转会', icon: 'form' }
+      }
+    ]
+  },
+  {
     path: '/mine',
     component: Layout,
     children: [
@@ -125,44 +144,44 @@ export const constantRoutes = [
       }
     ]
   },
-  {
-    path: '/test',
-    component: Layout,
-    meta: { title: '测试菜单', icon: 'form' },
-    children: [
-      {
-        path: 'index',
-        name: 'TestIndex',
-        component: () => import('@/views/testPage/index'),
-        meta: { title: '测试', icon: 'form' }
-      },
-      {
-        path: 'pagetwo',
-        name: 'PageTwo',
-        component: () => import('@/views/testPage/pageTwo'),
-        meta: { title: '测试2', icon: 'form' }
-      }
-    ]
-  },
-  {
-    path: '/level',
-    component: Layout,
-    meta: { title: '等级管理', icon: 'form' },
-    children: [
-      {
-        path: 'list',
-        name: 'LevelList',
-        component: () => import('@/views/level/list'),
-        meta: { title: '等级列表', icon: 'form' }
-      },
-      {
-        path: 'add',
-        name: 'LevelAdd',
-        component: () => import('@/views/level/add'),
-        meta: { title: '添加等级', icon: 'form' }
-      }
-    ]
-  },
+  // {
+  //   path: '/test',
+  //   component: Layout,
+  //   meta: { title: '测试菜单', icon: 'form' },
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'TestIndex',
+  //       component: () => import('@/views/testPage/index'),
+  //       meta: { title: '测试', icon: 'form' }
+  //     },
+  //     {
+  //       path: 'pagetwo',
+  //       name: 'PageTwo',
+  //       component: () => import('@/views/testPage/pageTwo'),
+  //       meta: { title: '测试2', icon: 'form' }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/level',
+  //   component: Layout,
+  //   meta: { title: '等级管理', icon: 'form' },
+  //   children: [
+  //     {
+  //       path: 'list',
+  //       name: 'LevelList',
+  //       component: () => import('@/views/level/list'),
+  //       meta: { title: '等级列表', icon: 'form' }
+  //     },
+  //     {
+  //       path: 'add',
+  //       name: 'LevelAdd',
+  //       component: () => import('@/views/level/add'),
+  //       meta: { title: '添加等级', icon: 'form' }
+  //     }
+  //   ]
+  // },
   // {
   //   path: '/address',
   //   component: Layout,
@@ -182,26 +201,26 @@ export const constantRoutes = [
   //     }
   //   ]
   // },
-  {
-    path: '/message',
-    component: Layout,
-    meta: { title: '信息管理', icon: 'form' },
-    children: [
-      {
-        path: 'list',
+  // {
+  //   path: '/message',
+  //   component: Layout,
+  //   meta: { title: '信息管理', icon: 'form' },
+  //   children: [
+  //     {
+  //       path: 'list',
 
-        name: 'MessageList',
-        component: () => import('@/views/message/list'),
-        meta: { title: '信息列表', icon: 'form' }
-      },
-      {
-        path: 'add',
-        name: 'MessageAdd',
-        component: () => import('@/views/message/add'),
-        meta: { title: '添加修改', icon: 'form' }
-      }
-    ]
-  },
+  //       name: 'MessageList',
+  //       component: () => import('@/views/message/list'),
+  //       meta: { title: '信息列表', icon: 'form' }
+  //     },
+  //     {
+  //       path: 'add',
+  //       name: 'MessageAdd',
+  //       component: () => import('@/views/message/add'),
+  //       meta: { title: '添加修改', icon: 'form' }
+  //     }
+  //   ]
+  // },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
