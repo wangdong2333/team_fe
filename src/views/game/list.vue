@@ -3,17 +3,38 @@
     <el-table-column type="index" width="100"> </el-table-column>
     <el-table-column prop="name" label="赛事名称"> </el-table-column>
     <el-table-column prop="timeName" label="赛事阶段"> </el-table-column>
-    <el-table-column prop="count" sortable label="出场次数" width="100"> </el-table-column>
+    <el-table-column prop="count" sortable label="出场次数" width="100">
+    </el-table-column>
     <el-table-column prop="win" sortable label="胜率"> </el-table-column>
-    <el-table-column prop="kill" sortable label="总击杀(场均)" width="150"> </el-table-column>
-    <el-table-column prop="death" sortable label="总死亡(场均)" width="150"> </el-table-column>
-    <el-table-column prop="putEye" sortable label="场均插眼" width="100"> </el-table-column>
-    <el-table-column prop="removeEye" sortable label="场均排眼" width="100"> </el-table-column>
-    <el-table-column prop="money" sortable label="场均金钱" width="100"> </el-table-column>
+    <el-table-column prop="kill" sortable label="总击杀(场均)" width="150">
+    </el-table-column>
+    <el-table-column prop="death" sortable label="总死亡(场均)" width="150">
+    </el-table-column>
+    <el-table-column prop="putEye" sortable label="场均插眼" width="100">
+    </el-table-column>
+    <el-table-column prop="removeEye" sortable label="场均排眼" width="100">
+    </el-table-column>
+    <el-table-column
+      prop="money"
+      sortable
+      label="场均金钱"
+      width="100"
+    ></el-table-column>
+    <el-table-column prop="money" sortable label="查看视频" width="100">
+      <template slot-scope="scope">
+        <el-button
+          size="mini"
+          @click="getVideo(scope.$index, scope.row)"
+          type="success"
+          round
+          >查看视频</el-button
+        >
+      </template>
+    </el-table-column>
 
     <el-table-column label="操作" width="150">
       <template slot-scope="scope">
-        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
+        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)" type="primary"
           >编辑</el-button
         >
         <el-button
@@ -35,14 +56,13 @@ export default {
           name: "战神",
           timeName: "春季",
           win: "909",
-          kill: '223',
-          count:'19',
-          death: '89',
-          putEye: '89',
-          removeEye: '89',
-          money: '10989'
+          kill: "223",
+          count: "19",
+          death: "89",
+          putEye: "89",
+          removeEye: "89",
+          money: "10989",
         },
-       
       ],
     };
   },
@@ -53,6 +73,10 @@ export default {
     },
     handleDelete(index, row) {
       console.log(index, row);
+    },
+    getVideo() {
+      window.location.href =
+        "https://www.mgtv.com/b/316387/4192387.html?cxid=95kqkw8n6";
     },
   },
 };
