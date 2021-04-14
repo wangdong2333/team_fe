@@ -70,9 +70,12 @@
 
 <script>
 import { validUsername } from "@/utils/validate";
-import { login, getInfo } from "@/api/user";
+import { register, getInfo } from "@/api/user";
 import router, { resetRouter } from "@/router";
 import { mapGetters } from "vuex";
+import axios from 'axios'
+import { mapActions } from "vuex";
+
 export default {
   name: "Login",
   data() {
@@ -100,6 +103,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions(['loginAction']),
     showPwd() {
       if (this.passwordType === "password") {
         this.passwordType = "";
@@ -114,20 +118,46 @@ export default {
       this.$router.push(`/register`);
     },
     async handleLogin() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.loading = true
-          this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
-            this.loading = false
-          }).catch(() => {
-            this.loading = false
-          })
-        } else {
-          console.log('error submit!!')
-          return false
+      console.log(this.loginForm);
+      axios({
+          url: 'http://localhost:3000/user/loginUser',
+          method: "post",
+          data: {
+            userName: this.loginForm.username,
+            password: this.loginForm.password,
+          }
+      }).then((res) =>{
+        console.log(res);
+        if(res.data.code === 200 ) {
+           this.$message({
+              message: '登录成功',
+              type: 'success'
+            });
+          localStorage.setItem('userInfo',JSON.stringify(res.data.userInfo));
+          this.loginAction(res.data.userInfo);
+          this.$router.push('/main/index')
+        }else if (res.data.code === 201 ) {
+          this.$message.error('用户不存在');
         }
-      })
+      });
+
+      // this.getUserInfo();
+
+      // this.$router.push('/a')
+      // this.$refs.loginForm.validate(valid => {
+      //   if (valid) {
+      //     this.loading = true
+      //     this.$store.dispatch('user/login', this.loginForm).then(() => {
+      //       this.$router.push({ path: this.redirect || '/' })
+      //       this.loading = false
+      //     }).catch(() => {
+      //       this.loading = false
+      //     })
+      //   } else {
+      //     console.log('error submit!!')
+      //     return false
+      //   }
+      // })
 
       // this.$refs.loginForm.validate((valid) => {
       //   if (valid) {

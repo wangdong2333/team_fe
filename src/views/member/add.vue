@@ -1,12 +1,12 @@
 <template>
-  <div class="app-container" v-loading="loading">
+  <div class="app-container">
     <el-form
       :model="ruleForm"
       :rules="rules"
       ref="ruleForm"
       label-width="150px"
     >
-      <el-form-item label="姓名" prop="name">
+      <!-- <el-form-item label="姓名" prop="name">
         <el-input v-model="ruleForm.name"></el-input>
       </el-form-item>
       <el-form-item label="年龄" prop="tel">
@@ -37,39 +37,72 @@
       </el-form-item>
       <el-form-item label="加入战队时间" prop="tel">
         <el-date-picker v-model="time" type="date" placeholder="选择日期"></el-date-picker>
-      </el-form-item>
-      <el-form-item label="上传头像">
-        <el-upload
-          name="sfile"
-          class="upload-demo"
-          action="http://47.92.82.13:4000/getMessageA"
-          multiple
-          :on-success="sfileSuccess"
-          :limit="1"
-          :file-list="fileList"
-        >
-          <el-button size="small" type="primary">点击上传</el-button>
-          <div slot="tip" class="el-upload__tip">
-            只能上传jpg/png文件，且不超过500kb
-          </div>
-        </el-upload>
-      </el-form-item>
-      <!-- <el-form-item label="上传微信二维码">
-        <el-upload
-          class="upload-demo"
-          action="http://47.92.82.13:4000/getMessageB"
-          multiple
-          name="sweixin"
-          :limit="1"
-          :on-success="weixinSuccess"
-          :file-list="fileList"
-        >
-          <el-button size="small" type="primary">点击上传</el-button>
-          <div slot="tip" class="el-upload__tip">
-            只能上传jpg/png文件，且不超过500kb
-          </div>
-        </el-upload>
       </el-form-item> -->
+      <el-form-item label="姓名" prop="username">
+        <el-input
+          ref="username"
+          v-model="ruleForm.username"
+          placeholder="Username"
+          name="username"
+          type="text"
+          tabindex="1"
+          auto-complete="on"
+        />
+      </el-form-item>
+
+      <el-form-item label="年龄" prop="age">
+        <el-input
+          ref="age"
+          v-model="ruleForm.age"
+          placeholder="age"
+          name="age"
+          tabindex="2"
+          auto-complete="on"
+        />
+      </el-form-item>
+      <el-form-item label="电话" prop="tel">
+        <el-input
+          ref="tel"
+          v-model="ruleForm.tel"
+          placeholder="tel"
+          name="tel"
+          tabindex="2"
+          auto-complete="on"
+        />
+      </el-form-item>
+      <el-form-item label="等级" prop="lev ">
+        <el-select class="lev" v-model="ruleForm.lev" placeholder="请选择">
+          <el-option
+            v-for="item in levOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="位置" prop="position ">
+        <el-select
+          class="position"
+          v-model="ruleForm.position"
+          placeholder="请选择"
+        >
+          <el-option
+            v-for="item in positionOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="选择日期" prop="time">
+        <el-date-picker
+          v-model="ruleForm.time"
+          type="date"
+          placeholder="选择日期">
+        </el-date-picker>
+      </el-form-item>
       <el-form-item>
         <el-button
           v-if="isUpdata"
@@ -89,32 +122,60 @@
 import { levelList } from "@/api/level";
 import { addressList } from "@/api/address";
 import { messageAdd, messageById, updataMessage } from "@/api/message";
+import axios from 'axios';
+
 export default {
   data() {
     return {
-      isUpdata: false,
-      fileList: [],
-      loading: false,
-      levelData: [],
-      addressData: [],
+      isUpdata:false,
+      positionOptions:[{
+        value:'上路',
+        lable:'上路'
+      },{
+        value:'中路',
+        lable:'中路'
+      },{
+        value:'下路',
+        lable:'下路'
+      },{
+        value:'辅助',
+        lable:'辅助'
+      },{
+        value:'打野',
+        lable:'打野'
+      }],
+      levOptions:[
+        {
+        value:'初级',
+        lable:'初级'
+      },{
+        value:'中级',
+        lable:'中级'
+      },{
+        value:'高级',
+        lable:'高级'
+      },
+      ],
       ruleForm: {
-        name: "",
+        username: "",
         tel: "",
-        address: "",
-        level: "",
-        tcoin: "",
-        weixin: "",
+        age: "",
+        lev: "",
+        position: "",
+        time: "",
       },
       rules: {
-        name: [{ required: true, message: "请输入活动名称", trigger: "blur" }],
+        username: [{ required: true, message: "请输入活动名称", trigger: "blur" }],
         tel: [{ required: true, message: "请输入活动名称", trigger: "blur" }],
-        address: [{ required: true, message: "请选择地址", trigger: "change" }],
-        level: [{ required: true, message: "请选择等级", trigger: "change" }],
+        age: [{ required: true, message: "请选择年龄", trigger: "blur" }],
+        lev: [{ required: true, message: "请选择等级", trigger: "blur" }],
+        position: [{ required: true, message: "请选择位置", trigger: "change" }],
       },
     };
   },
   created() {
-    this.getSelData();
+    console.log(this.$route.query.id);
+    // this.getSelData();
     if (this.$route.query.id) {
       this.updataInit(this.$route.query.id);
     }
@@ -123,84 +184,104 @@ export default {
     // 修改初始化
     updataInit(id) {
       this.isUpdata = true;
-      messageById({ id }).then((res) => {
-        let _data = res.data.data[0];
-        this.ruleForm = {
-          name: _data.jrname,
-          tel: _data.jrtel,
-          address: _data.jraddressesid,
-          level: _data.jrlevel,
-          weixin: _data.weixin,
-          tcoin: _data.tcoin,
-        };
-      });
-    },
-    // 头像上传成功
-    sfileSuccess(response) {
-      this.ruleForm.tcoin = response.headerurl;
-    },
-    // 微信二维码上传
-    weixinSuccess(response) {
-      this.ruleForm.weixin = response.weixinurl;
+      axios({
+        url: 'http://localhost:3000/teamList/getDetail',
+        method: "get",
+        params: {
+          id: id
+        }
+      }).then(res => {
+          console.log(res.data);
+          let _data = res.data;
+          this.ruleForm = {
+            username: _data.name,
+            tel: _data.tel,
+            age: _data.age,
+            lev: _data.lev,
+            position: _data.position,
+            time: _data.time,
+          };
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
 
-    // 获取下拉列表信息
-    getSelData() {
-      this.loading = true;
-      let promiseLevel = new Promise((resolve, reject) => {
-        levelList().then((res) => {
-          this.levelData = res.data.data;
-          resolve(res.data.data);
-        });
-      });
-      let promiseAddress = new Promise((resolve, reject) => {
-        addressList().then((res) => {
-          this.addressData = res.data.data;
-          resolve(res.data.data);
-        });
-      });
+    // // 获取下拉列表信息
+    // getSelData() {
+    //   this.loading = true;
+    //   let promiseLevel = new Promise((resolve, reject) => {
+    //     levelList().then((res) => {
+    //       this.levelData = res.data.data;
+    //       resolve(res.data.data);
+    //     });
+    //   });
+    //   let promiseAddress = new Promise((resolve, reject) => {
+    //     addressList().then((res) => {
+    //       this.addressData = res.data.data;
+    //       resolve(res.data.data);
+    //     });
+    //   });
 
-      Promise.all([promiseLevel, promiseAddress]).then((res) => {
-        this.loading = false;
-      });
-    },
+    //   Promise.all([promiseLevel, promiseAddress]).then((res) => {
+    //     this.loading = false;
+    //   });
+    // },
     // 提交修改
     updataForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          updataMessage({
-            id: this.$route.query.id,
-            uname: this.ruleForm.name,
-            addressid: this.ruleForm.address,
-            levelid: this.ruleForm.level,
-            tel: this.ruleForm.tel,
-          }).then((res) => {
-            this.$router.push("/message/list");
-          });
-        } else {
-          this.$message.error("表单内容有误");
-          return false;
+      axios({
+        url: 'http://localhost:3000/teamList/updateTeamList',
+        method: "post",
+        params: {
+          id: this.$route.query.id
+        },
+        data: {
+          name: this.ruleForm.username,
+          tel: this.ruleForm.tel,
+          age: this.ruleForm.age,
+          lev: this.ruleForm.lev,
+          position: this.ruleForm.position,
+          time: this.ruleForm.time
         }
-      });
+      }).then(res => {
+        console.log(res);
+        if(res.data.code === 200) {
+          this.$message({
+            message: '修改成功',
+            type: 'success'
+          });
+          this.resetForm('ruleForm');
+          this.$router.push('/member/list');
+        }
+      })
     },
     // 提交操作
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          messageAdd({
-            uname: this.ruleForm.name,
-            addressid: this.ruleForm.address,
-            levelid: this.ruleForm.level,
-            tel: this.ruleForm.tel,
-            tcoin: this.ruleForm.tcoin,
-            weixin: this.ruleForm.weixin,
-          }).then((res) => {
-            this.$router.push("/message/list");
-          });
-        } else {
-          this.$message.error("表单内容有误");
-          return false;
+      console.log(this.ruleForm);
+      axios({
+        url: 'http://localhost:3000/teamList/addTeamList',
+        method: "post",
+        data: {
+          name: this.ruleForm.username,
+          tel: this.ruleForm.tel,
+          age: this.ruleForm.age,
+          lev: this.ruleForm.lev,
+          position: this.ruleForm.position,
+          time: this.ruleForm.time
         }
+      }).then(res => {
+        console.log(res);
+        if(res.data.code === 200) {
+          this.$message({
+            message: '添加成功',
+            type: 'success'
+          });
+          this.resetForm('ruleForm');
+          this.$router.push('/member/list');
+        }
+      })
+      .catch(err => {
+        console.log(err);
       });
     },
     // 重置表单

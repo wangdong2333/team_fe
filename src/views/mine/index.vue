@@ -10,7 +10,7 @@
       </div>
       <div>
         <div class="enname">{{tableData[0].enname}}</div>
-        <div class="chname">{{tableData[0].chname}}</div>
+        <div class="chname">{{tableData[0].userName}}</div>
         <div class="detail">
           工业园区管委会副主任兰浩通报了2011年全市安全生产情况，并安排部署了2012年安全生产重点工作。会议还表彰了2011年安全生产工作先进单位和先进个人。工业园区管委会副主任兰浩通报了2011年全市安全生产情况，并安排部署了2012年安全生产重点工作。会议还表彰了2011年安全生产工作先进单位和先进个人.
         </div>
@@ -18,21 +18,14 @@
     </div>
     <h3>个人数据</h3>
     <el-table :data="tableData" style="width: 100%" class="table">
-      <!-- <el-table-column prop="name" label="姓名"> </el-table-column>
-      <el-table-column prop="age" sortable label="年龄"> </el-table-column>
-      <el-table-column prop="position" label="位置"> </el-table-column>
-      <el-table-column prop="level" label="等级"> </el-table-column>
-      <el-table-column prop="tel" label="手机号"> </el-table-column>
-      <el-table-column prop="date" sortable label="加入战队时间">
-      </el-table-column> -->
       <el-table-column min-width="100px" label="姓名">
         <template scope="scope">
           <el-input
             v-show="scope.row.edit"
             size="small"
-            v-model="scope.row.chname"
+            v-model="scope.row.userName"
           ></el-input>
-          <span v-show="!scope.row.edit">{{ scope.row.chname }}</span>
+          <span v-show="!scope.row.edit">{{ scope.row.userName }}</span>
         </template>
       </el-table-column>
       <el-table-column min-width="100px" label="年龄">
@@ -60,9 +53,9 @@
           <el-input
             v-show="scope.row.edit"
             size="small"
-            v-model="scope.row.level"
+            v-model="scope.row.lev"
           ></el-input>
-          <span v-show="!scope.row.edit">{{ scope.row.level }}</span>
+          <span v-show="!scope.row.edit">{{ scope.row.lev }}</span>
         </template>
       </el-table-column>
       <el-table-column min-width="100px" label="电话号码">
@@ -77,14 +70,14 @@
       </el-table-column>
       <!-- <el-table-column prop="date" sortable label="加入战队时间"> -->
 
-      <el-table-column min-width="100px" label="加入战斗时间">
+      <el-table-column min-width="100px" label="加入战队时间">
         <template scope="scope">
           <el-input
             v-show="scope.row.edit"
             size="small"
-            v-model="scope.row.date"
+            v-model="scope.row.createDate"
           ></el-input>
-          <span v-show="!scope.row.edit">{{ scope.row.date }}</span>
+          <span v-show="!scope.row.edit">{{ scope.row.createDate }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作" width="120">
@@ -112,16 +105,19 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
+
 export default {
   data() {
     return {
       tableData: [
         {
-          date: "2016-05-02",
-          chname: "战神",
-          enname: "ZhanShen",
+          createDate: "2016-05-02",
+          userName: "战神",
+          enname: "MingCheng",
           position: "上路",
-          level: "高级",
+          lev: "高级",
           tel: "18103605857",
           age: "19",
           edit: false
@@ -129,9 +125,25 @@ export default {
       ],
     };
   },
+  computed:{
+    ...mapState(["userInfo"]),
+  },
+  mounted() {
+    console.log(localStorage.getItem('userInfo'), 'localStorage');
+    let userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    console.log(userInfo.userName);
+    this.tableData[0].userName = userInfo.userName;
+    this.tableData[0].position = userInfo.position;
+    this.tableData[0].lev = userInfo.lev;
+    this.tableData[0].tel = userInfo.tel;
+    this.tableData[0].age = userInfo.age;
+    this.tableData[0].createDate = userInfo.createDate;
+  },
   methods: {
     reSet(scope) {
+      console.log(scope.row);
       scope.row.edit = false;
+      localStorage.setItem('userInfo', JSON.stringify(scope.row));
     }
   },
 };
@@ -167,6 +179,7 @@ export default {
   font-weight: 400;
   height: 55px;
   line-height: 55px;
+  margin-top: 10px;
 }
 .detail {
   font-size: 14px;

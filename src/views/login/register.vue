@@ -42,41 +42,53 @@
           @keyup.enter.native="handleLogin"
         />
       </el-form-item>
-      <el-form-item prop="telephone">
+      <el-form-item prop="age">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
         <el-input
-          ref="telephone"
-          v-model="loginForm.telephone"
-          placeholder="telephone "
-          name="telephone "
-          type="text"
-          tabindex="1"
+          ref="age"
+          v-model="loginForm.age"
+          placeholder="age"
+          name="age"
+          tabindex="2"
           auto-complete="on"
         />
       </el-form-item>
-      <el-form-item prop="username">
+      <el-form-item prop="tel">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
         <el-input
-          ref="name "
-          v-model="loginForm.name"
-          placeholder="name "
-          name="name "
-          type="text"
-          tabindex="1"
+          ref="tel"
+          v-model="loginForm.tel"
+          placeholder="tel"
+          name="tel"
+          tabindex="2"
           auto-complete="on"
         />
       </el-form-item>
-      <el-form-item prop="sex ">
+      <el-form-item prop="lev ">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-         <el-select class="sex" v-model="loginForm.sex" placeholder="请选择">
+         <el-select class="lev" v-model="loginForm.lev" placeholder="请选择">
               <el-option
-                v-for="item in options"
+                v-for="item in levOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+      </el-form-item>
+      <el-form-item prop="position ">
+        <span class="svg-container">
+          <svg-icon icon-class="user" />
+        </span>
+         <el-select class="position" v-model="loginForm.position" placeholder="请选择">
+              <el-option
+                v-for="item in positionOptions"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -98,24 +110,47 @@
 <script>
 import { validUsername } from "@/utils/validate";
 import { register, getInfo } from "@/api/user";
+import axios from 'axios'
 
 export default {
   name: "Login",
   data() {
     return {
-      options:[{
-        value:'男',
-        lable:'男'
+      positionOptions:[{
+        value:'上路',
+        lable:'上路'
       },{
-        value:'女',
-        lable:'女'
+        value:'中路',
+        lable:'中路'
+      },{
+        value:'下路',
+        lable:'下路'
+      },{
+        value:'辅助',
+        lable:'辅助'
+      },{
+        value:'打野',
+        lable:'打野'
       }],
+      levOptions:[
+        {
+        value:'初级',
+        lable:'初级'
+      },{
+        value:'中级',
+        lable:'中级'
+      },{
+        value:'高级',
+        lable:'高级'
+      },
+      ],
       loginForm: {
         username: "",
         password: "",
-        telephone: "",
-        name: "",
-        sex: "",
+        tel: "",
+        age: "",
+        lev: "",
+        position: ""
       },
       loginRules: {
         username: [{ required: true, trigger: "blur" }],
@@ -146,32 +181,56 @@ export default {
       });
     },
     async handleLogin() {
-      this.$refs.loginForm.validate((valid) => {
-        if (valid) {
-          this.loading = true;
-          register(this.loginForm).then((res) => {
-            if (res.data.code === 200) {
-              this.$message({
-                message: res.data.message,
-                type: "success",
-              });
-              this.$router.push("/login");
-            } else {
-              this.$message({
-                message: res.data.message,
-                type: "error",
-              });
-            }
-            this.loading = false;
-          }).catch((e)=>{
-               this.loading = false;
-               alert('err')           
-          })
-        } else {
-          console.log("error submit!!");
-          return false;
+      console.log(this.loginForm);
+      axios({
+          url: 'http://localhost:3000/user/registUser',
+          method: "post",
+          data: {
+            userName: this.loginForm.username,
+            password: this.loginForm.password,
+            tel: this.loginForm.tel,
+            age: this.loginForm.age,
+            lev: this.loginForm.lev,
+            position: this.loginForm.position,
+          }
+      }).then((res) =>{
+        console.log(res);
+        if(res.data.code === 200 ) {
+           this.$message({
+              message: '注册成功',
+              type: 'success'
+            });
+          this.$router.push("/login");
+        }else if (res.data.code === 201 ) {
+          this.$message.error('注册失败');
         }
       });
+      // this.$refs.loginForm.validate((valid) => {
+      //   if (valid) {
+      //     this.loading = true;
+      //     register(this.loginForm).then((res) => {
+      //       if (res.data.code === 200) {
+      //         this.$message({
+      //           message: res.data.message,
+      //           type: "success",
+      //         });
+      //         this.$router.push("/login");
+      //       } else {
+      //         this.$message({
+      //           message: res.data.message,
+      //           type: "error",
+      //         });
+      //       }
+      //       this.loading = false;
+      //     }).catch((e)=>{
+      //          this.loading = false;
+      //          alert('err')           
+      //     })
+      //   } else {
+      //     console.log("error submit!!");
+      //     return false;
+      //   }
+      // });
     },
     getUserInfo() {
       getInfo().then((res) => {

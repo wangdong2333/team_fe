@@ -2,7 +2,7 @@
   <el-table :data="tableData" style="width: 100%">
     <el-table-column type="index" width="100"> </el-table-column>
     <el-table-column prop="name" label="姓名"> </el-table-column>
-    <el-table-column prop="lastName" label="原战队"> </el-table-column>
+    <el-table-column prop="oldTeam" label="原战队"> </el-table-column>
     <el-table-column prop="time" sortable label="转会时间"> </el-table-column>
     <el-table-column label="操作" width="150">
       <template slot-scope="scope">
@@ -20,42 +20,55 @@
   </el-table>
 </template>
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
       tableData: [
         {
           name: "战神",
-          lastName: 'LOL',
+          oldTeam: 'LOL',
           time: "2016-11-11",
         },
         {
           name: "六立",
-          lastName: 'WE',
+          oldTeam: 'WE',
           time: "2017-11-11",
         },
       ],
     };
   },
-  created() {},
+  created() {
+    this.getList();
+  },
   methods: {
     handleEdit(index, row) {
-      console.log(index, row);
+      this.$router.push({path:'/transfer/add', query: {id : row._id}});
     },
-    handleDelete(item) {
-      // console.log(index, row);
+    handleDelete(row) {
       this.$confirm("此操作将永久删除该地址, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(() => {
-          delAddress({ addressid: item.addressid }).then((res) => {
-            this.$message({
-              type: "success",
-              message: "删除成功!",
-            });
-            this.getList();
+          axios({
+            url: 'http://localhost:3000/transfer/delTransferList',
+            params: {
+              id: row._id
+            }
+          }).then(res => {
+            console.log(res);
+            if(res.data.code === 200) {
+              this.$message({
+                message: '删除成功',
+                type: 'success'
+              });
+              this.getList();
+            }
+          })
+          .catch(err => {
+            console.log(err);
           });
         })
         .catch(() => {
@@ -64,7 +77,19 @@ export default {
             message: "已取消删除",
           });
         });
-    },      
+    },
+    getList() {
+      axios({
+          url: 'http://localhost:3000/transfer/getTransferList'
+        })
+        .then(res => {
+          console.log(res);
+          this.tableData = res.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      }
   },
 };
 </script>

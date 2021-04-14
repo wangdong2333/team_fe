@@ -4,7 +4,6 @@ export function login(data) {
   return request({
     url: '/login',
     method: 'post',
-    data
   })
 }
 
@@ -13,6 +12,13 @@ export function getInfo(token) {
     url: '/info',
     method: 'get',
     params: { token }
+  })
+}
+
+export function register() {
+  return request({
+    url: '/user/registUser',
+    method: 'post',
   })
 }
 

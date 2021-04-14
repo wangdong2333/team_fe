@@ -13,7 +13,45 @@ const store = new Vuex.Store({
     settings,
     user
   },
-  getters
+  getters,
+  state: {
+    userInfo:{}
+  },
+  mutations: {//不能异步操作  是改变状态池（state）里面数据的唯一路径
+    changeLogin(state, status) {
+      state.userInfo = status;
+    }
+  },
+  actions: {//通过调用mutations里面的方法改变state
+    loginAction({ commit }, user) {
+      commit('changeLogin', user);
+    }
+  },
 })
 
 export default store
+
+// export default new Vuex.Store({
+//   modules: {
+//     app,
+//     settings,
+//     user
+//   },
+//   getters,
+//   state: {
+//     userInfo:{}
+//   },
+//   mutations: {//不能异步操作  是改变状态池（state）里面数据的唯一路径
+//     changeLogin(state, status) {
+//       state.userInfo = status;
+//     }
+//   },
+//   actions: {//通过调用mutations里面的方法改变state
+//     loginAction({ commit }, user) {
+//       commit('changeLogin', user);
+//     }
+//   },
+//   modules: {
+    
+//   }
+// })

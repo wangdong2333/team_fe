@@ -78,7 +78,7 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/mumber',
+    path: '/member',
     component: Layout,
     meta: { title: '团队成员', icon: 'form' },
     children: [
@@ -149,25 +149,6 @@ export const constantRoutes = [
     ]
   },
   // {
-  //   path: '/test',
-  //   component: Layout,
-  //   meta: { title: '测试菜单', icon: 'form' },
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       name: 'TestIndex',
-  //       component: () => import('@/views/testPage/index'),
-  //       meta: { title: '测试', icon: 'form' }
-  //     },
-  //     {
-  //       path: 'pagetwo',
-  //       name: 'PageTwo',
-  //       component: () => import('@/views/testPage/pageTwo'),
-  //       meta: { title: '测试2', icon: 'form' }
-  //     }
-  //   ]
-  // },
-  // {
   //   path: '/level',
   //   component: Layout,
   //   meta: { title: '等级管理', icon: 'form' },
@@ -232,16 +213,16 @@ export const constantRoutes = [
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
+  // scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })
 
 const router = createRouter()
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
-export function resetRouter() {
-  const newRouter = createRouter()
-  router.matcher = newRouter.matcher // reset router
-}
+// export function resetRouter() {
+//   const newRouter = createRouter()
+//   router.matcher = newRouter.matcher // reset router
+// }
 
 export default router

@@ -1,6 +1,6 @@
 <template>
   <el-table :data="tableData" style="width: 100%">
-    <el-table-column type="index" width="100"> </el-table-column>
+    <el-table-column type="index" width="50"> </el-table-column>
     <el-table-column prop="name" label="赛事名称"> </el-table-column>
     <el-table-column prop="timeName" label="赛事阶段"> </el-table-column>
     <el-table-column prop="count" sortable label="出场次数" width="100">

@@ -46,9 +46,9 @@ export default {
     },
     async logout() {
       // await this.$store.dispatch("user/logout");
-      // this.$router.push(`/login?redirect=${this.$route.fullPath}`);
-      this.deleteAllCookies();
-      this.$router.go(0);
+      this.$router.push(`/login`);
+      // this.deleteAllCookies();
+      // this.$router.go(0);
     },
     mine() {
       this.$router.push('/mine/index')
