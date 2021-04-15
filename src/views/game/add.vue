@@ -1,69 +1,119 @@
 <template>
-  <div class="app-container" v-loading="loading">
+  <div class="app-container">
     <el-form
       :model="ruleForm"
       :rules="rules"
       ref="ruleForm"
       label-width="150px"
     >
-      <el-form-item label="姓名" prop="name">
-        <el-input v-model="ruleForm.name"></el-input>
+      <el-form-item label="赛事名称" prop="name">
+        <el-input
+          ref="name"
+          v-model="ruleForm.name"
+          placeholder="name"
+          name="name"
+          type="text"
+          tabindex="1"
+          auto-complete="on"
+        />
       </el-form-item>
-      <el-form-item label="电话" prop="tel">
-        <el-input v-model="ruleForm.tel"></el-input>
+
+      <el-form-item label="赛事阶段" prop="timeName">
+        <el-input
+          ref="timeName"
+          v-model="ruleForm.timeName"
+          placeholder="timeName"
+          name="timeName"
+          tabindex="2"
+          auto-complete="on"
+        />
       </el-form-item>
-      <el-form-item label="地址" prop="address">
-        <el-select v-model="ruleForm.address" placeholder="请选择地址">
-          <el-option 
-            v-for="item in addressData" :key="item.addressid"
-            :label="item.addressname"
-            :value="item.addressid"
-          ></el-option>
-        </el-select>
+      <el-form-item label="出场次数" prop="count">
+        <el-input
+          ref="count"
+          v-model="ruleForm.count"
+          placeholder="count"
+          name="count"
+          tabindex="2"
+          auto-complete="on"
+        />
       </el-form-item>
-      <el-form-item label="等级" prop="level">
-        <el-select v-model="ruleForm.level" placeholder="请选择等级">
-          <el-option 
-            v-for="item in levelData" :key="item.jrid"
-            :label="item.levelname"
-            :value="item.jrid"
-          ></el-option>
-        </el-select>
+      <el-form-item label="胜率" prop="win">
+        <el-input
+          ref="win"
+          v-model="ruleForm.win"
+          placeholder="win"
+          name="win"
+          tabindex="2"
+          auto-complete="on"
+        />
       </el-form-item>
-      <el-form-item label="上传头像">
-        <el-upload
-          name="sfile"
-          class="upload-demo"
-          action="http://47.92.82.13:4000/getMessageA"
-          multiple
-          :on-success="sfileSuccess"
-          :limit="1"
-          :file-list="fileList"
-        >
-          <el-button size="small" type="primary">点击上传</el-button>
-          <div slot="tip" class="el-upload__tip">
-            只能上传jpg/png文件，且不超过500kb
-          </div>
-        </el-upload>
+      <el-form-item label="总击杀(场均)" prop="kill">
+        <el-input
+          ref="kill"
+          v-model="ruleForm.kill"
+          placeholder="kill"
+          name="kill"
+          tabindex="2"
+          auto-complete="on"
+        />
       </el-form-item>
-      <el-form-item label="上传微信二维码">
-        <el-upload
-          class="upload-demo"
-          action="http://47.92.82.13:4000/getMessageB"
-          multiple
-          name="sweixin"
-          :limit="1"
-          :on-success="weixinSuccess"
-          :file-list="fileList"
-        >
-          <el-button size="small" type="primary">点击上传</el-button>
-          <div slot="tip" class="el-upload__tip">
-            只能上传jpg/png文件，且不超过500kb
-          </div>
-        </el-upload>
+      <el-form-item label="总死亡(场均)" prop="death">
+        <el-input
+          ref="death"
+          v-model="ruleForm.death"
+          placeholder="death"
+          name="death"
+          tabindex="2"
+          auto-complete="on"
+        />
       </el-form-item>
+      <el-form-item label="场均插眼" prop="putEye">
+        <el-input
+          ref="putEye"
+          v-model="ruleForm.putEye"
+          placeholder="putEye"
+          name="putEye"
+          tabindex="2"
+          auto-complete="on"
+        />
+      </el-form-item>
+      <el-form-item label="场均排眼" prop="removeEye">
+        <el-input
+          ref="removeEye"
+          v-model="ruleForm.removeEye"
+          placeholder="removeEye"
+          name="removeEye"
+          tabindex="2"
+          auto-complete="on"
+        />
+      </el-form-item>
+      <el-form-item label="场均金钱" prop="money">
+        <el-input
+          ref="money"
+          v-model="ruleForm.money"
+          placeholder="money"
+          name="money"
+          tabindex="2"
+          auto-complete="on"
+        />
+      </el-form-item>
+      <el-form-item label="比赛视频" prop="video">
+        <el-input
+          ref="video"
+          v-model="ruleForm.video"
+          placeholder="video"
+          name="video"
+          tabindex="2"
+          auto-complete="on"
+        />
+      </el-form-item>
+    
       <el-form-item>
-        <el-button v-if="isUpdata" type="primary" @click="updataForm('ruleForm')"
+        <el-button
+          v-if="isUpdata"
+          type="primary"
+          @click="updataForm('ruleForm')"
           >立即修改</el-button
         >
         <el-button v-else type="primary" @click="submitForm('ruleForm')"
@@ -75,126 +125,133 @@
   </div>
 </template>
 <script>
-import { levelList } from "@/api/level"
-import { addressList } from '@/api/address'
-import { messageAdd,messageById,updataMessage } from '@/api/message'
+import { messageAdd, messageById, updataMessage } from "@/api/message";
+import axios from 'axios';
+
 export default {
   data() {
     return {
       isUpdata:false,
-      fileList: [],
-      loading:false,
-      levelData:[],
-      addressData:[],
+      
       ruleForm: {
         name: "",
-        tel: "",
-        address: "",
-        level: "",
-        tcoin:'',
-        weixin:''
+        timeName: "",
+        count: "",
+        win: "",
+        kill: "",
+        death: "",
+        putEye: "",
+        removeEye: "",
+        money: "",
+        video: ""
       },
       rules: {
-        name: [{ required: true, message: "请输入活动名称", trigger: "blur" }],
-        tel: [{ required: true, message: "请输入活动名称", trigger: "blur" }],
-        address: [{ required: true, message: "请选择地址", trigger: "change" }],
-        level: [{ required: true, message: "请选择等级", trigger: "change" }],
+        name: [{ required: true, message: "请输入赛事名称", trigger: "blur" }],
+        timeName: [{ required: true, message: "请输入活动名称", trigger: "blur" }],
+        count: [{ required: true, message: "请输入出场次数", trigger: "blur" }]
       },
     };
   },
   created() {
-      this.getSelData();
-      if(this.$route.query.id){
-        this.updataInit(this.$route.query.id)
-      }
+    console.log(this.$route.query.id);
+    // this.getSelData();
+    if (this.$route.query.id) {
+      this.updataInit(this.$route.query.id);
+    }
   },
   methods: {
     // 修改初始化
-    updataInit(id){
+    updataInit(id) {
       this.isUpdata = true;
-      messageById({id}).then((res)=>{
-        let _data = res.data.data[0]
-        this.ruleForm = {
-          name:_data.jrname,
-          tel:_data.jrtel,
-          address:_data.jraddressesid,
-          level:_data.jrlevel,
-          weixin:_data.weixin,
-          tcoin:_data.tcoin
+      axios({
+        url: 'http://localhost:3000/game/getDetail',
+        method: "get",
+        params: {
+          id: id
         }
-      })
-    },
-    // 头像上传成功
-    sfileSuccess(response){
-        this.ruleForm.tcoin = response.headerurl;
-    },
-    // 微信二维码上传
-    weixinSuccess(response){
-        this.ruleForm.weixin = response.weixinurl
-    },
-    
-
-    // 获取下拉列表信息
-    getSelData(){
-        this.loading = true;
-        let promiseLevel = new Promise((resolve,reject)=>{
-            levelList().then((res)=>{
-                this.levelData = res.data.data;
-                resolve(res.data.data)
-            });
+      }).then(res => {
+          console.log(res.data);
+          let _data = res.data;
+          this.ruleForm = {
+            name: _data.name,
+            timeName: _data.timeName,
+            win: _data.win,
+            kill: _data.kill,
+            count: _data.count,
+            death: _data.death,
+            putEye: _data.putEye,
+            removeEye: _data.removeEye,
+            money: _data.money,
+            video: _data.video
+          };
         })
-        let promiseAddress = new Promise((resolve,reject)=>{
-            addressList().then((res)=>{
-                this.addressData = res.data.data
-                resolve(res.data.data)
-            })
-        })
-
-        Promise.all([promiseLevel,promiseAddress]).then((res)=>{
-            this.loading = false
-        })
-        
-        
-
+        .catch(err => {
+          console.log(err);
+        });
     },
     // 提交修改
-    updataForm(formName){
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          updataMessage({
-            id:this.$route.query.id,
-            uname:this.ruleForm.name,
-            addressid:this.ruleForm.address,
-            levelid:this.ruleForm.level,
-            tel:this.ruleForm.tel
-          }).then((res)=>{
-            this.$router.push("/message/list")
-          })
-        }else{
-          this.$message.error('表单内容有误');
-          return false;
+    updataForm(formName) {
+      axios({
+        url: 'http://localhost:3000/game/updateGameList',
+        method: "post",
+        params: {
+          id: this.$route.query.id
+        },
+        data: {
+          name: this.ruleForm.name,
+          timeName: this.ruleForm.timeName,
+          win: this.ruleForm.win,
+          kill: this.ruleForm.kill,
+          count: this.ruleForm.count,
+          death: this.ruleForm.death,
+          putEye: this.ruleForm.putEye,
+          removeEye: this.ruleForm.removeEye,
+          money: this.ruleForm.money,
+          video: this.ruleForm.video
+        }
+      }).then(res => {
+        console.log(res);
+        if(res.data.code === 200) {
+          this.$message({
+            message: '修改成功',
+            type: 'success'
+          });
+          this.resetForm('ruleForm');
+          this.$router.push('/game/list');
         }
       })
-
     },
     // 提交操作
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-         messageAdd({
-             uname:this.ruleForm.name,
-             addressid:this.ruleForm.address,
-             levelid:this.ruleForm.level,
-             tel:this.ruleForm.tel,
-             tcoin:this.ruleForm.tcoin,
-             weixin:this.ruleForm.weixin
-         }).then((res)=>{
-             this.$router.push("/message/list")
-         })
-        } else {
-          this.$message.error('表单内容有误');
-          return false;
+      console.log(this.ruleForm.putEye);
+      axios({
+        url: 'http://localhost:3000/game/addGameList',
+        method: "post",
+        data: {
+          name: this.ruleForm.name,
+          timeName: this.ruleForm.timeName,
+          win: this.ruleForm.win,
+          kill: this.ruleForm.kill,
+          count: this.ruleForm.count,
+          death: this.ruleForm.death,
+          putEye: this.ruleForm.putEye,
+          removeEye: this.ruleForm.removeEye,
+          money: this.ruleForm.money,
+          video: this.ruleForm.video
         }
+      }).then(res => {
+        console.log(res);
+        if(res.data.code === 200) {
+          this.$message({
+            message: '添加成功',
+            type: 'success'
+          });
+          this.resetForm('ruleForm');
+          this.$router.push('/game/list');
+        }
+      })
+      .catch(err => {
+        console.log(err);
       });
     },
     // 重置表单

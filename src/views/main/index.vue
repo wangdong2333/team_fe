@@ -13,61 +13,13 @@
     <div class="main_member">
       <h3>现役成员</h3>
       <div>
-        <div class="main_member_card">
+        <div class="main_member_card" v-for="(item, index) in memberData" :key='index'>
           <div class="pic">
             <img class="main_member_card_img" src="https://img2.baidu.com/it/u=2042214437,350526930&fm=26&fmt=auto&gp=0.jpg">
-            <span class="label">打野</span>
+            <span class="label">{{ item.position }}</span>
           </div>
           <div class="name">
-            <p class="ename">兰浩</p>
-          </div>
-        </div>
-
-        <div class="main_member_card">
-          <div class="pic">
-            <img class="main_member_card_img" src="https://img2.baidu.com/it/u=2042214437,350526930&fm=26&fmt=auto&gp=0.jpg">
-            <span class="label">打野</span>
-          </div>
-          <div class="name">
-            <p class="ename">兰浩</p>
-          </div>
-        </div>
-
-        <div class="main_member_card">
-          <div class="pic">
-            <img class="main_member_card_img" src="https://img2.baidu.com/it/u=2042214437,350526930&fm=26&fmt=auto&gp=0.jpg">
-            <span class="label">打野</span>
-          </div>
-          <div class="name">
-            <p class="ename">兰浩</p>
-          </div>
-        </div>
-
-        <div class="main_member_card">
-          <div class="pic">
-            <img class="main_member_card_img" src="https://img2.baidu.com/it/u=2042214437,350526930&fm=26&fmt=auto&gp=0.jpg">
-            <span class="label">打野</span>
-          </div>
-          <div class="name">
-            <p class="ename">兰浩</p>
-          </div>
-        </div>
-        <div class="main_member_card">
-          <div class="pic">
-            <img class="main_member_card_img" src="https://img2.baidu.com/it/u=2042214437,350526930&fm=26&fmt=auto&gp=0.jpg">
-            <span class="label">打野</span>
-          </div>
-          <div class="name">
-            <p class="ename">兰浩</p>
-          </div>
-        </div>
-        <div class="main_member_card">
-          <div class="pic">
-            <img class="main_member_card_img" src="https://img2.baidu.com/it/u=2042214437,350526930&fm=26&fmt=auto&gp=0.jpg">
-            <span class="label">打野</span>
-          </div>
-          <div class="name">
-            <p class="ename">兰浩</p>
+            <p class="ename">{{ item.name }}</p>
           </div>
         </div>
       </div>
@@ -76,11 +28,30 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data() {
-    return {};
+    return {
+      memberData: []
+    };
   },
-  methods: {},
+  created() {
+    this.getList();
+  },
+  methods: {
+    getList() {
+      axios({
+        url: 'http://localhost:3000/teamList/getTeamList'
+      })
+      .then(res => {
+        console.log(res);
+        this.memberData = res.data;
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    }
+  },
 };
 </script>
 

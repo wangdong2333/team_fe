@@ -100,7 +100,8 @@
         <el-date-picker
           v-model="ruleForm.time"
           type="date"
-          placeholder="选择日期">
+          placeholder="选择日期"
+        >
         </el-date-picker>
       </el-form-item>
       <el-form-item>
@@ -122,39 +123,47 @@
 import { levelList } from "@/api/level";
 import { addressList } from "@/api/address";
 import { messageAdd, messageById, updataMessage } from "@/api/message";
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   data() {
     return {
-      isUpdata:false,
-      positionOptions:[{
-        value:'上路',
-        lable:'上路'
-      },{
-        value:'中路',
-        lable:'中路'
-      },{
-        value:'下路',
-        lable:'下路'
-      },{
-        value:'辅助',
-        lable:'辅助'
-      },{
-        value:'打野',
-        lable:'打野'
-      }],
-      levOptions:[
+      isUpdata: false,
+      positionOptions: [
         {
-        value:'初级',
-        lable:'初级'
-      },{
-        value:'中级',
-        lable:'中级'
-      },{
-        value:'高级',
-        lable:'高级'
-      },
+          value: "上路",
+          lable: "上路",
+        },
+        {
+          value: "中路",
+          lable: "中路",
+        },
+        {
+          value: "下路",
+          lable: "下路",
+        },
+        {
+          value: "辅助",
+          lable: "辅助",
+        },
+        {
+          value: "打野",
+          lable: "打野",
+        },
+      ],
+      levOptions: [
+        {
+          value: "初级",
+          lable: "初级",
+        },
+        {
+          value: "中级",
+          lable: "中级",
+        },
+        {
+          value: "高级",
+          lable: "高级",
+        },
       ],
       ruleForm: {
         username: "",
@@ -163,13 +172,18 @@ export default {
         lev: "",
         position: "",
         time: "",
+        // imageUrl: ""
       },
       rules: {
-        username: [{ required: true, message: "请输入活动名称", trigger: "blur" }],
+        username: [
+          { required: true, message: "请输入活动名称", trigger: "blur" },
+        ],
         tel: [{ required: true, message: "请输入活动名称", trigger: "blur" }],
         age: [{ required: true, message: "请选择年龄", trigger: "blur" }],
         lev: [{ required: true, message: "请选择等级", trigger: "blur" }],
-        position: [{ required: true, message: "请选择位置", trigger: "change" }],
+        position: [
+          { required: true, message: "请选择位置", trigger: "change" },
+        ],
       },
     };
   },
@@ -185,12 +199,13 @@ export default {
     updataInit(id) {
       this.isUpdata = true;
       axios({
-        url: 'http://localhost:3000/teamList/getDetail',
+        url: "http://localhost:3000/teamList/getDetail",
         method: "get",
         params: {
-          id: id
-        }
-      }).then(res => {
+          id: id,
+        },
+      })
+        .then((res) => {
           console.log(res.data);
           let _data = res.data;
           this.ruleForm = {
@@ -202,7 +217,7 @@ export default {
             time: _data.time,
           };
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
@@ -230,10 +245,10 @@ export default {
     // 提交修改
     updataForm(formName) {
       axios({
-        url: 'http://localhost:3000/teamList/updateTeamList',
+        url: "http://localhost:3000/teamList/updateTeamList",
         method: "post",
         params: {
-          id: this.$route.query.id
+          id: this.$route.query.id,
         },
         data: {
           name: this.ruleForm.username,
@@ -241,25 +256,25 @@ export default {
           age: this.ruleForm.age,
           lev: this.ruleForm.lev,
           position: this.ruleForm.position,
-          time: this.ruleForm.time
-        }
-      }).then(res => {
+          time: this.ruleForm.time,
+        },
+      }).then((res) => {
         console.log(res);
-        if(res.data.code === 200) {
+        if (res.data.code === 200) {
           this.$message({
-            message: '修改成功',
-            type: 'success'
+            message: "修改成功",
+            type: "success",
           });
-          this.resetForm('ruleForm');
-          this.$router.push('/member/list');
+          this.resetForm("ruleForm");
+          this.$router.push("/member/list");
         }
-      })
+      });
     },
     // 提交操作
     submitForm(formName) {
       console.log(this.ruleForm);
       axios({
-        url: 'http://localhost:3000/teamList/addTeamList',
+        url: "http://localhost:3000/teamList/addTeamList",
         method: "post",
         data: {
           name: this.ruleForm.username,
@@ -267,27 +282,40 @@ export default {
           age: this.ruleForm.age,
           lev: this.ruleForm.lev,
           position: this.ruleForm.position,
-          time: this.ruleForm.time
-        }
-      }).then(res => {
-        console.log(res);
-        if(res.data.code === 200) {
-          this.$message({
-            message: '添加成功',
-            type: 'success'
-          });
-          this.resetForm('ruleForm');
-          this.$router.push('/member/list');
-        }
+          time: this.ruleForm.time,
+        },
       })
-      .catch(err => {
-        console.log(err);
-      });
+        .then((res) => {
+          console.log(res);
+          if (res.data.code === 200) {
+            this.$message({
+              message: "添加成功",
+              type: "success",
+            });
+            this.resetForm("ruleForm");
+            this.$router.push("/member/list");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isJPG && isLt2M;
+    }
   },
 };
 </script>
@@ -296,4 +324,27 @@ export default {
   width: 500px;
   margin: 50px auto;
 }
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
 </style>

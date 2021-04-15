@@ -6,7 +6,7 @@
     <el-table-column prop="count" sortable label="出场次数" width="100">
     </el-table-column>
     <el-table-column prop="win" sortable label="胜率"> </el-table-column>
-    <el-table-column prop="kill" sortable label="总击杀(场均)" width="150">
+    <el-table-column prop="win" sortable label="总击杀(场均)" width="150">
     </el-table-column>
     <el-table-column prop="death" sortable label="总死亡(场均)" width="150">
     </el-table-column>
@@ -24,7 +24,7 @@
       <template slot-scope="scope">
         <el-button
           size="mini"
-          @click="getVideo(scope.$index, scope.row)"
+          @click="getVideo(scope.row)"
           type="success"
           round
           >查看视频</el-button
@@ -48,6 +48,7 @@
   </el-table>
 </template>
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -66,18 +67,51 @@ export default {
       ],
     };
   },
-  created() {},
+  created() {
+    this.getList();
+  },
   methods: {
     handleEdit(index, row) {
-      console.log(index, row);
+      this.$router.push({path:'/game/add', query: {id : row._id}});
     },
     handleDelete(index, row) {
-      console.log(index, row);
+      // console.log(index, row);
+      axios({
+        url: 'http://localhost:3000/game/delGameList',
+        params: {
+          id: row._id
+        }
+      })
+        .then(res => {
+          console.log(res);
+          if(res.data.code === 200) {
+            this.$message({
+              message: '删除成功',
+              type: 'success'
+            });
+            this.getList();
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
-    getVideo() {
-      window.location.href =
-        "https://www.mgtv.com/b/316387/4192387.html?cxid=95kqkw8n6";
+    getVideo(row) {
+      console.log(row)
+      window.location.href = row.video;
     },
+    getList() {
+      axios({
+        url: 'http://localhost:3000/game/getGameList'
+      })
+      .then(res => {
+        console.log(res);
+        this.tableData = res.data;
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    }
   },
 };
 </script>
