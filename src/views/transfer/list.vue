@@ -20,7 +20,8 @@
   </el-table>
 </template>
 <script>
-import axios from 'axios'
+import axios from 'axios';
+import moment from "moment";
 export default {
   data() {
     return {
@@ -46,6 +47,7 @@ export default {
     if(userData.vip === '团队成员') {
         this.vip = false;
     }
+    // console.log(moment('2021-04-16T06:01:32.628Z').format('YYYY-MM-DD'));
   },
   methods: {
     handleEdit(index, row) {
@@ -90,6 +92,9 @@ export default {
         })
         .then(res => {
           console.log(res);
+          res.data.forEach((item) =>{
+            item.time = moment(item.time).format('YYYY-MM-DD');
+          })
           this.tableData = res.data;
         })
         .catch(err => {

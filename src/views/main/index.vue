@@ -15,7 +15,8 @@
       <div>
         <div class="main_member_card" v-for="(item, index) in memberData" :key='index'>
           <div class="pic">
-            <img class="main_member_card_img" src="https://img2.baidu.com/it/u=2042214437,350526930&fm=26&fmt=auto&gp=0.jpg">
+            <img class="main_member_card_img" :src="item.imgUrl" v-if="item.imgUrl">
+            <img class="main_member_card_img" v-if="!item.imgUrl" src="https://img2.baidu.com/it/u=2042214437,350526930&fm=26&fmt=auto&gp=0.jpg">
             <span class="label">{{ item.position }}</span>
           </div>
           <div class="name">

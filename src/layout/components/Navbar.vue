@@ -11,7 +11,8 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img src="https://img1.baidu.com/it/u=602302961,2090760884&fm=26&fmt=auto&gp=0.jpg" class="user-avatar" />
+          <!-- <img src="https://img1.baidu.com/it/u=602302961,2090760884&fm=26&fmt=auto&gp=0.jpg" class="user-avatar" /> -->
+          <div class="user">你好: {{userName}}</div>
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -39,6 +40,16 @@ export default {
   },
   computed: {
     ...mapGetters(["sidebar", "avatar"]),
+  },
+  created() {
+    let userData = JSON.parse(localStorage.getItem('userInfo'));
+    this.userName = userData.userName;
+    console.log(userData)
+  },
+  data(){
+    return {
+      userName : ""
+    }
   },
   methods: {
     toggleSideBar() {
@@ -123,13 +134,15 @@ export default {
       margin-right: 30px;
 
       .avatar-wrapper {
-        margin-top: 5px;
+        // margin-top: 5px;
+        // margin-bottom: 5px;
+
         position: relative;
 
         .user-avatar {
           cursor: pointer;
-          width: 40px;
-          height: 40px;
+          // width: 40px;
+          // height: 40px;
           border-radius: 10px;
         }
 
@@ -142,6 +155,11 @@ export default {
         }
       }
     }
+  }
+  .user{
+    // background: #ff0036;
+    border-radius: 10px;
+    color: rgb(13, 139, 89);
   }
 }
 </style>

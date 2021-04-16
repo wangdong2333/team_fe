@@ -24,6 +24,7 @@
 </template>
 <script>
 import axios from 'axios';
+import moment from 'moment';
 export default {
   data() {
     return {
@@ -89,6 +90,9 @@ export default {
       })
       .then(res => {
         console.log(res);
+        res.data.forEach((item) =>{
+          item.time = moment(item.time).format('YYYY-MM-DD')
+        })
         this.tableData = res.data;
       })
       .catch(err => {
