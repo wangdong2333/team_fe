@@ -1,138 +1,147 @@
 <template>
-  <div class="app-container">
-    <el-form
-      :model="ruleForm"
-      :rules="rules"
-      ref="ruleForm"
-      label-width="150px"
-    >
-      <el-form-item label="赛事名称" prop="name">
-        <el-input
-          ref="name"
-          v-model="ruleForm.name"
-          placeholder="name"
-          name="name"
-          type="text"
-          tabindex="1"
-          auto-complete="on"
-        />
-      </el-form-item>
+  <div>
+    <div class="app-container" v-if="vip">
+      <el-form
+        :model="ruleForm"
+        :rules="rules"
+        ref="ruleForm"
+        label-width="150px"
+      >
+        <el-form-item label="赛事名称" prop="name">
+          <el-input
+            ref="name"
+            v-model="ruleForm.name"
+            placeholder="name"
+            name="name"
+            type="text"
+            tabindex="1"
+            auto-complete="on"
+          />
+        </el-form-item>
 
-      <el-form-item label="赛事阶段" prop="timeName">
-        <el-input
-          ref="timeName"
-          v-model="ruleForm.timeName"
-          placeholder="timeName"
-          name="timeName"
-          tabindex="2"
-          auto-complete="on"
-        />
-      </el-form-item>
-      <el-form-item label="出场次数" prop="count">
-        <el-input
-          ref="count"
-          v-model="ruleForm.count"
-          placeholder="count"
-          name="count"
-          tabindex="2"
-          auto-complete="on"
-        />
-      </el-form-item>
-      <el-form-item label="胜率" prop="win">
-        <el-input
-          ref="win"
-          v-model="ruleForm.win"
-          placeholder="win"
-          name="win"
-          tabindex="2"
-          auto-complete="on"
-        />
-      </el-form-item>
-      <el-form-item label="总击杀(场均)" prop="kill">
-        <el-input
-          ref="kill"
-          v-model="ruleForm.kill"
-          placeholder="kill"
-          name="kill"
-          tabindex="2"
-          auto-complete="on"
-        />
-      </el-form-item>
-      <el-form-item label="总死亡(场均)" prop="death">
-        <el-input
-          ref="death"
-          v-model="ruleForm.death"
-          placeholder="death"
-          name="death"
-          tabindex="2"
-          auto-complete="on"
-        />
-      </el-form-item>
-      <el-form-item label="场均插眼" prop="putEye">
-        <el-input
-          ref="putEye"
-          v-model="ruleForm.putEye"
-          placeholder="putEye"
-          name="putEye"
-          tabindex="2"
-          auto-complete="on"
-        />
-      </el-form-item>
-      <el-form-item label="场均排眼" prop="removeEye">
-        <el-input
-          ref="removeEye"
-          v-model="ruleForm.removeEye"
-          placeholder="removeEye"
-          name="removeEye"
-          tabindex="2"
-          auto-complete="on"
-        />
-      </el-form-item>
-      <el-form-item label="场均金钱" prop="money">
-        <el-input
-          ref="money"
-          v-model="ruleForm.money"
-          placeholder="money"
-          name="money"
-          tabindex="2"
-          auto-complete="on"
-        />
-      </el-form-item>
-      <el-form-item label="比赛视频" prop="video">
-        <el-input
-          ref="video"
-          v-model="ruleForm.video"
-          placeholder="video"
-          name="video"
-          tabindex="2"
-          auto-complete="on"
-        />
-      </el-form-item>
-    
-      <el-form-item>
-        <el-button
-          v-if="isUpdata"
-          type="primary"
-          @click="updataForm('ruleForm')"
-          >立即修改</el-button
-        >
-        <el-button v-else type="primary" @click="submitForm('ruleForm')"
-          >立即创建</el-button
-        >
-        <el-button @click="resetForm('ruleForm')">重置</el-button>
-      </el-form-item>
-    </el-form>
+        <el-form-item label="赛事阶段" prop="timeName">
+          <el-input
+            ref="timeName"
+            v-model="ruleForm.timeName"
+            placeholder="timeName"
+            name="timeName"
+            tabindex="2"
+            auto-complete="on"
+          />
+        </el-form-item>
+        <el-form-item label="出场次数" prop="count">
+          <el-input
+            ref="count"
+            v-model="ruleForm.count"
+            placeholder="count"
+            name="count"
+            tabindex="2"
+            auto-complete="on"
+          />
+        </el-form-item>
+        <el-form-item label="胜率" prop="win">
+          <el-input
+            ref="win"
+            v-model="ruleForm.win"
+            placeholder="win"
+            name="win"
+            tabindex="2"
+            auto-complete="on"
+          />
+        </el-form-item>
+        <el-form-item label="总击杀(场均)" prop="kill">
+          <el-input
+            ref="kill"
+            v-model="ruleForm.kill"
+            placeholder="kill"
+            name="kill"
+            tabindex="2"
+            auto-complete="on"
+          />
+        </el-form-item>
+        <el-form-item label="总死亡(场均)" prop="death">
+          <el-input
+            ref="death"
+            v-model="ruleForm.death"
+            placeholder="death"
+            name="death"
+            tabindex="2"
+            auto-complete="on"
+          />
+        </el-form-item>
+        <el-form-item label="场均插眼" prop="putEye">
+          <el-input
+            ref="putEye"
+            v-model="ruleForm.putEye"
+            placeholder="putEye"
+            name="putEye"
+            tabindex="2"
+            auto-complete="on"
+          />
+        </el-form-item>
+        <el-form-item label="场均排眼" prop="removeEye">
+          <el-input
+            ref="removeEye"
+            v-model="ruleForm.removeEye"
+            placeholder="removeEye"
+            name="removeEye"
+            tabindex="2"
+            auto-complete="on"
+          />
+        </el-form-item>
+        <el-form-item label="场均金钱" prop="money">
+          <el-input
+            ref="money"
+            v-model="ruleForm.money"
+            placeholder="money"
+            name="money"
+            tabindex="2"
+            auto-complete="on"
+          />
+        </el-form-item>
+        <el-form-item label="比赛视频" prop="video">
+          <el-input
+            ref="video"
+            v-model="ruleForm.video"
+            placeholder="video"
+            name="video"
+            tabindex="2"
+            auto-complete="on"
+          />
+        </el-form-item>
+      
+        <el-form-item>
+          <el-button
+            v-if="isUpdata"
+            type="primary"
+            @click="updataForm('ruleForm')"
+            >立即修改</el-button
+          >
+          <el-button v-else type="primary" @click="submitForm('ruleForm')"
+            >立即创建</el-button
+          >
+          <el-button @click="resetForm('ruleForm')">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+    <div v-else>
+      <Permission/>
+    </div>
   </div>
 </template>
 <script>
 import { messageAdd, messageById, updataMessage } from "@/api/message";
 import axios from 'axios';
+import Permission from '../permission'
 
 export default {
+  components: {
+    Permission
+  },
   data() {
     return {
       isUpdata:false,
-      
+      vip:true,
       ruleForm: {
         name: "",
         timeName: "",
@@ -154,7 +163,11 @@ export default {
   },
   created() {
     console.log(this.$route.query.id);
-    // this.getSelData();
+    let userData = JSON.parse(localStorage.getItem('userInfo'));
+    console.log(userData)
+    if(userData.vip === '团队成员') {
+        this.vip = false;
+    }
     if (this.$route.query.id) {
       this.updataInit(this.$route.query.id);
     }

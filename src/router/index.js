@@ -94,7 +94,14 @@ export const constantRoutes = [
         name: 'MessageAdd',
         component: () => import('@/views/member/add'),
         meta: { title: '添加成员', icon: 'form' }
-      }
+      },
+      {
+        path: 'demo',
+
+        name: 'MessageDemo',
+        component: () => import('@/views/member/demo'),
+        meta: { title: 'demo', icon: 'form' }
+      },
     ]
   },
   {
@@ -148,64 +155,6 @@ export const constantRoutes = [
       }
     ]
   },
-  // {
-  //   path: '/level',
-  //   component: Layout,
-  //   meta: { title: '等级管理', icon: 'form' },
-  //   children: [
-  //     {
-  //       path: 'list',
-  //       name: 'LevelList',
-  //       component: () => import('@/views/level/list'),
-  //       meta: { title: '等级列表', icon: 'form' }
-  //     },
-  //     {
-  //       path: 'add',
-  //       name: 'LevelAdd',
-  //       component: () => import('@/views/level/add'),
-  //       meta: { title: '添加等级', icon: 'form' }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/address',
-  //   component: Layout,
-  //   meta: { title: '地址管理', icon: 'form' },
-  //   children: [
-  //     {
-  //       path: 'list',
-  //       name: 'AddressList',
-  //       component: () => import('@/views/address/list'),
-  //       meta: { title: '地址列表', icon: 'form' }
-  //     },
-  //     {
-  //       path: 'add',
-  //       name: 'AddressAdd',
-  //       component: () => import('@/views/address/add'),
-  //       meta: { title: '添加地址', icon: 'form' }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/message',
-  //   component: Layout,
-  //   meta: { title: '信息管理', icon: 'form' },
-  //   children: [
-  //     {
-  //       path: 'list',
-
-  //       name: 'MessageList',
-  //       component: () => import('@/views/message/list'),
-  //       meta: { title: '信息列表', icon: 'form' }
-  //     },
-  //     {
-  //       path: 'add',
-  //       name: 'MessageAdd',
-  //       component: () => import('@/views/message/add'),
-  //       meta: { title: '添加修改', icon: 'form' }
-  //     }
-  //   ]
-  // },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

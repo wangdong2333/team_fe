@@ -6,7 +6,7 @@
 
 <script>
 import * as echarts from "echarts";
-
+import axios from 'axios';
 export default {
   name: "hello",
   data() {
@@ -55,8 +55,8 @@ export default {
             type: "value",
             name: "击杀/死亡数量",
             min: 0,
-            max: 200,
-            interval: 10,
+            max: 30,
+            interval: 2,
             axisLabel: {
               formatter: "{value}",
             },
@@ -77,28 +77,28 @@ export default {
             name: "场均击杀数量",
             type: "bar",
             data: [
-              10.7,
-              20.7,
-              30.7,
-              40.7,
-              50.7,
-              60.7,
-              70.7,
-              80.7,  
+              1.7,
+              8.4,
+              3.8,
+              4.7,
+              5.2,
+              7.9,
+              5.3,
+              3.7,  
             ],
           },
           {
             name: "场均死亡数量",
             type: "bar",
             data: [
-              70.7,
-              70.7,
-              70.7,
-              70.7,
-              70.7,
-              70.7,
-              70.7,
-              70.7,  
+              5,
+              7,
+              7,
+              9,
+              3,
+              13,
+              6,
+              8,  
             ],
           },
           {
@@ -121,15 +121,34 @@ export default {
     };
   },
   mounted() {
-    this.drawLine();
+    // this.drawLine();
+  },
+  created() {
+    this.getList();
   },
   methods: {
     drawLine() {
-      // console.log(this.option.xAxis[0].data[0]);
       var chartDom = document.getElementById("myChart");
       var myChart = echarts.init(chartDom, "dark"); 
       this.option && myChart.setOption(this.option);
     },
+    getList() {
+      axios({
+        url: 'http://localhost:3000/teamList/getTeamList'
+      })
+      .then(res => {
+        console.log(res);
+        let targetName = [];
+        res.data.forEach((item, index) =>{
+          targetName.push(item.name);
+        })
+        this.option.xAxis[0].data = targetName;
+        this.drawLine();
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    }
   },
 };
 </script>

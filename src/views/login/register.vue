@@ -96,6 +96,20 @@
               </el-option>
             </el-select>
       </el-form-item>
+      <el-form-item prop="vip">
+        <span class="svg-container">
+          <svg-icon icon-class="user" />
+        </span>
+         <el-select class="vip" v-model="loginForm.vip" placeholder="请选择">
+              <el-option
+                v-for="item in permissionOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+      </el-form-item>
       <el-button
         :loading="loading"
         type="primary"
@@ -116,6 +130,16 @@ export default {
   name: "Login",
   data() {
     return {
+      permissionOptions: [
+        {
+          value: '团队管理员',
+          lable: '团队管理员'
+        },
+        {
+          value: '团队成员',
+          lable: '团队成员'
+        }
+      ],
       positionOptions:[{
         value:'上路',
         lable:'上路'
@@ -150,7 +174,8 @@ export default {
         tel: "",
         age: "",
         lev: "",
-        position: ""
+        position: "",
+        vip: ""
       },
       loginRules: {
         username: [{ required: true, trigger: "blur" }],
@@ -192,6 +217,7 @@ export default {
             age: this.loginForm.age,
             lev: this.loginForm.lev,
             position: this.loginForm.position,
+            vip: this.loginForm.vip
           }
       }).then((res) =>{
         console.log(res);

@@ -32,7 +32,7 @@
       </template>
     </el-table-column>
 
-    <el-table-column label="操作" width="150">
+    <el-table-column label="操作" width="150" v-if="vip">
       <template slot-scope="scope">
         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)" type="primary"
           >编辑</el-button
@@ -52,6 +52,7 @@ import axios from 'axios'
 export default {
   data() {
     return {
+      vip :true,
       tableData: [
         {
           name: "战神",
@@ -69,6 +70,11 @@ export default {
   },
   created() {
     this.getList();
+    let userData = JSON.parse(localStorage.getItem('userInfo'));
+    console.log(userData)
+    if(userData.vip === '团队成员') {
+        this.vip = false;
+    }
   },
   methods: {
     handleEdit(index, row) {

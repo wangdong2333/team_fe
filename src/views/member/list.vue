@@ -7,7 +7,7 @@
     <el-table-column prop="lev" label="等级"> </el-table-column>
     <el-table-column prop="tel" label="手机号"> </el-table-column>
     <el-table-column prop="time" sortable label="加入战队时间"> </el-table-column>
-    <el-table-column label="操作">
+    <el-table-column label="操作" v-if="vip">
       <template slot-scope="scope">
         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
           >编辑</el-button
@@ -27,6 +27,7 @@ import axios from 'axios';
 export default {
   data() {
     return {
+      vip: true,
       tableData: [
         {
           time: "2016-05-02",
@@ -49,6 +50,11 @@ export default {
   },
   created() {
     this.getList();
+    let userData = JSON.parse(localStorage.getItem('userInfo'));
+    console.log(userData)
+    if(userData.vip === '团队成员') {
+        this.vip = false;
+    }
   },
   methods: {
     handleEdit(index, row) {
