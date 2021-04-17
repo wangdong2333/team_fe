@@ -95,13 +95,13 @@ export const constantRoutes = [
         component: () => import('@/views/member/add'),
         meta: { title: '添加成员', icon: 'form' }
       },
-      {
-        path: 'demo',
+      // {
+      //   path: 'demo',
 
-        name: 'MessageDemo',
-        component: () => import('@/views/member/demo'),
-        meta: { title: 'demo', icon: 'form' }
-      },
+      //   name: 'MessageDemo',
+      //   component: () => import('@/views/member/demo'),
+      //   meta: { title: 'demo', icon: 'form' }
+      // },
     ]
   },
   {

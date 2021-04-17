@@ -1,7 +1,7 @@
 <template>
   <el-upload
   class="avatar-uploader"
-  action="https://localhost:3000"
+  action="#"
   :show-file-list="false"
   :on-success="handleAvatarSuccess"
   :before-upload="beforeAvatarUpload">
@@ -10,7 +10,7 @@
 </el-upload>
 </template>
 <script>
-
+import axios from 'axios';
 export default {
   data() {
     return {
@@ -26,18 +26,25 @@ export default {
         this.imageUrl = URL.createObjectURL(file.raw);
       },
       beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
-
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!');
-        }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
-        }
-        console.log('222')
-
-        return isJPG && isLt2M;
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('dir', 'wangdong');
+        axios({
+          url: "http://121.196.167.117:8085/file/uploadFile",
+          method: "post",
+          data: formData
+        }).then((res) => {
+          console.log(res);
+          this.imageUrl = "http://121.196.167.117:8085/" + res.data.data;
+          this.$message({
+            type: "success",
+            message: "上传成功!",
+            duration: 1000,
+          });
+        })
+        .catch((e) => {
+          console.log(e);
+        });
       }
     }
 };

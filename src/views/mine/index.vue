@@ -4,8 +4,7 @@
       <div>
         <img
           class="mine_img"
-          src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic.soutu123.cn%2Fback_pic%2F04%2F42%2F19%2F5258515186b9f29.jpg%21%2Ffw%2F700%2Fquality%2F90%2Funsharp%2Ftrue%2Fcompress%2Ftrue&refer=http%3A%2F%2Fpic.soutu123.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1620394011&t=013fa2898047bb16cdb8b691da521c14"
-          alt=""
+          :src="tableData[0].imgUrl"
         />
       </div>
       <div>
@@ -120,6 +119,7 @@ export default {
           lev: "高级",
           tel: "18103605857",
           age: "19",
+          imgUrl: "",
           edit: false
         },
       ],
@@ -138,6 +138,7 @@ export default {
     this.tableData[0].tel = userInfo.tel;
     this.tableData[0].age = userInfo.age;
     this.tableData[0].createDate = userInfo.createDate;
+    this.tableData[0].imgUrl = userInfo.imgUrl;
   },
   methods: {
     reSet(scope) {

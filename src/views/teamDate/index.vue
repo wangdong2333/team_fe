@@ -48,6 +48,9 @@ export default {
             axisPointer: {
               type: "shadow",
             },
+            axisLabel :{  
+                interval:0 
+            } 
           },
         ],
         yAxis: [
@@ -85,12 +88,28 @@ export default {
               7.9,
               5.3,
               3.7,  
+              1.7,
+              8.4,
+              3.8,
+              4.7,
+              5.2,
+              7.9,
+              5.3,
+              3.7, 
             ],
           },
           {
             name: "场均死亡数量",
             type: "bar",
             data: [
+              5,
+              7,
+              7,
+              9,
+              3,
+              13,
+              6,
+              8,  
               5,
               7,
               7,
@@ -106,6 +125,14 @@ export default {
             type: "line",
             yAxisIndex: 1,
             data: [
+              13,
+              5,
+              10,
+              18,
+              21,
+              9,
+              7,
+              17,
               13,
               5,
               10,
@@ -142,7 +169,10 @@ export default {
         res.data.forEach((item, index) =>{
           targetName.push(item.name);
         })
+        console.log(this.option.xAxis[0].data,'this.option.xAxis[0].data')
+
         this.option.xAxis[0].data = targetName;
+        console.log(this.option.xAxis[0].data,'this.option.xAxis[0].data')
         this.drawLine();
       })
       .catch(err => {

@@ -14,7 +14,7 @@
 
       <el-form-item prop="username">
         <span class="svg-container">
-          <svg-icon icon-class="user" />
+          姓名
         </span>
         <el-input
           ref="username"
@@ -39,7 +39,6 @@
           name="password"
           tabindex="2"
           auto-complete="on"
-          @keyup.enter.native="handleLogin"
         />
       </el-form-item>
       <el-form-item prop="age">
@@ -110,6 +109,21 @@
               </el-option>
             </el-select>
       </el-form-item>
+      <el-form-item prop="imgUrl" class="img">
+          <span class="svg-container">
+            <svg-icon icon-class="user" />
+            上传头像
+          </span>
+          <el-upload
+            class="avatar-uploader"
+            action="#"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+            <img v-if="loginForm.imgUrl" :src="loginForm.imgUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+        </el-form-item>
       <el-button
         :loading="loading"
         type="primary"
@@ -175,7 +189,8 @@ export default {
         age: "",
         lev: "",
         position: "",
-        vip: ""
+        vip: "",
+        imgUrl: ""
       },
       loginRules: {
         username: [{ required: true, trigger: "blur" }],
@@ -217,7 +232,8 @@ export default {
             age: this.loginForm.age,
             lev: this.loginForm.lev,
             position: this.loginForm.position,
-            vip: this.loginForm.vip
+            vip: this.loginForm.vip,
+            imgUrl: this.loginForm.imgUrl
           }
       }).then((res) =>{
         console.log(res);
@@ -231,32 +247,6 @@ export default {
           this.$message.error('注册失败');
         }
       });
-      // this.$refs.loginForm.validate((valid) => {
-      //   if (valid) {
-      //     this.loading = true;
-      //     register(this.loginForm).then((res) => {
-      //       if (res.data.code === 200) {
-      //         this.$message({
-      //           message: res.data.message,
-      //           type: "success",
-      //         });
-      //         this.$router.push("/login");
-      //       } else {
-      //         this.$message({
-      //           message: res.data.message,
-      //           type: "error",
-      //         });
-      //       }
-      //       this.loading = false;
-      //     }).catch((e)=>{
-      //          this.loading = false;
-      //          alert('err')           
-      //     })
-      //   } else {
-      //     console.log("error submit!!");
-      //     return false;
-      //   }
-      // });
     },
     getUserInfo() {
       getInfo().then((res) => {
@@ -264,6 +254,31 @@ export default {
         localStorage.setItem("userinfo", JSON.stringify(res.data.data));
       });
     },
+    handleAvatarSuccess(res, file) {
+      console.log('111')
+    },
+    beforeAvatarUpload(file) {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('dir', 'wangdong');
+      axios({
+        url: "http://121.196.167.117:8085/file/uploadFile",
+        method: "post",
+        data: formData
+      }).then((res) => {
+        console.log(res);
+        this.loginForm.imgUrl = "http://121.196.167.117:8085/" + res.data.data;
+        console
+        this.$message({
+          type: "success",
+          message: "上传成功!",
+          duration: 1000,
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    }
   },
 };
 </script>
@@ -350,7 +365,7 @@ $light_gray: #eee;
     padding: 6px 5px 6px 15px;
     color: $dark_gray;
     vertical-align: middle;
-    width: 30px;
+    // width: 30px;
     display: inline-block;
   }
 
@@ -375,5 +390,39 @@ $light_gray: #eee;
     cursor: pointer;
     user-select: none;
   }
+
+  .app-container {
+  width: 500px;
+  margin: 50px auto;
+}
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+    margin: 0 auto;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
+  // .img{
+  //   display: flex;
+  //   justify-content: center;
+  //   align-items: center;
+  // }
 }
 </style>

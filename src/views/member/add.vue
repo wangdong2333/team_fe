@@ -73,6 +73,17 @@
           >
           </el-date-picker>
         </el-form-item>
+        <el-form-item label="照片" prop="imgUrl">
+          <el-upload
+            class="avatar-uploader"
+            action="#"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+            <img v-if="ruleForm.imgUrl" :src="ruleForm.imgUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+        </el-form-item>
         <el-form-item>
           <el-button
             v-if="isUpdata"
@@ -150,7 +161,7 @@ export default {
         lev: "",
         position: "",
         time: "",
-        // imageUrl: ""
+        imgUrl: ""
       },
       rules: {
         username: [
@@ -197,33 +208,13 @@ export default {
             lev: _data.lev,
             position: _data.position,
             time: _data.time,
+            imgUrl: _data.imgUrl
           };
         })
         .catch((err) => {
           console.log(err);
         });
     },
-
-    // // 获取下拉列表信息
-    // getSelData() {
-    //   this.loading = true;
-    //   let promiseLevel = new Promise((resolve, reject) => {
-    //     levelList().then((res) => {
-    //       this.levelData = res.data.data;
-    //       resolve(res.data.data);
-    //     });
-    //   });
-    //   let promiseAddress = new Promise((resolve, reject) => {
-    //     addressList().then((res) => {
-    //       this.addressData = res.data.data;
-    //       resolve(res.data.data);
-    //     });
-    //   });
-
-    //   Promise.all([promiseLevel, promiseAddress]).then((res) => {
-    //     this.loading = false;
-    //   });
-    // },
     // 提交修改
     updataForm(formName) {
       axios({
@@ -239,6 +230,7 @@ export default {
           lev: this.ruleForm.lev,
           position: this.ruleForm.position,
           time: this.ruleForm.time,
+          imgUrl: this.ruleForm.imgUrl,
         },
       }).then((res) => {
         console.log(res);
@@ -265,6 +257,7 @@ export default {
           lev: this.ruleForm.lev,
           position: this.ruleForm.position,
           time: this.ruleForm.time,
+          imgUrl: this.ruleForm.imgUrl,
         },
       })
         .then((res) => {
@@ -286,22 +279,35 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
+    handleAvatarSuccess(res, file) {
+      console.log('111')
+    },
     beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!');
-      }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
-      }
-      return isJPG && isLt2M;
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('dir', 'wangdong');
+      axios({
+        url: "http://121.196.167.117:8085/file/uploadFile",
+        method: "post",
+        data: formData
+      }).then((res) => {
+        console.log(res);
+        this.ruleForm.imgUrl = "http://121.196.167.117:8085/" + res.data.data;
+        console
+        this.$message({
+          type: "success",
+          message: "上传成功!",
+          duration: 1000,
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
     }
   },
 };
 </script>
-<style scoped>
+<style>
 .app-container {
   width: 500px;
   margin: 50px auto;
