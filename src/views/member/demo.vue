@@ -5,8 +5,12 @@
   :show-file-list="false"
   :on-success="handleAvatarSuccess"
   :before-upload="beforeAvatarUpload">
-  <img v-if="imageUrl" :src="imageUrl" class="avatar">
-  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+  <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar">
+  <i v-else class="el-icon-plus avatar-uploader-icon"></i> -->
+   <video preload='auto' id='my-video' src='http://121.196.167.117:8085/uploads/wangdong/20210418132107_38614.mp4' webkit-playsinline='true'
+        playsinline='true' x-webkit-airplay='true' x5-video-player-type='h5' x5-video-player-fullscreen='true' controls="controls" x5-video-ignore-metadata='true' width='100%' height='100%'>
+            <p>当前视频不支持</p>
+    </video>
 </el-upload>
 </template>
 <script>

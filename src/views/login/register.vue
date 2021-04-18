@@ -14,7 +14,7 @@
 
       <el-form-item prop="username">
         <span class="svg-container">
-          姓名
+          姓名：
         </span>
         <el-input
           ref="username"
@@ -29,7 +29,7 @@
 
       <el-form-item prop="password">
         <span class="svg-container">
-          <svg-icon icon-class="password" />
+          密码：
         </span>
         <el-input
           :key="passwordType"
@@ -43,7 +43,7 @@
       </el-form-item>
       <el-form-item prop="age">
         <span class="svg-container">
-          <svg-icon icon-class="user" />
+          年龄：
         </span>
         <el-input
           ref="age"
@@ -56,7 +56,7 @@
       </el-form-item>
       <el-form-item prop="tel">
         <span class="svg-container">
-          <svg-icon icon-class="user" />
+          电话：
         </span>
         <el-input
           ref="tel"
@@ -69,7 +69,7 @@
       </el-form-item>
       <el-form-item prop="lev ">
         <span class="svg-container">
-          <svg-icon icon-class="user" />
+          等级：
         </span>
          <el-select class="lev" v-model="loginForm.lev" placeholder="请选择">
               <el-option
@@ -83,7 +83,7 @@
       </el-form-item>
       <el-form-item prop="position ">
         <span class="svg-container">
-          <svg-icon icon-class="user" />
+          位置：
         </span>
          <el-select class="position" v-model="loginForm.position" placeholder="请选择">
               <el-option
@@ -97,7 +97,7 @@
       </el-form-item>
       <el-form-item prop="vip">
         <span class="svg-container">
-          <svg-icon icon-class="user" />
+          管理：
         </span>
          <el-select class="vip" v-model="loginForm.vip" placeholder="请选择">
               <el-option
@@ -112,7 +112,7 @@
       <el-form-item prop="imgUrl" class="img">
           <span class="svg-container">
             <svg-icon icon-class="user" />
-            上传头像
+            上传头像：
           </span>
           <el-upload
             class="avatar-uploader"

@@ -105,6 +105,7 @@
 
 <script>
 import { mapState } from "vuex";
+import moment from 'moment';
 
 
 export default {
@@ -137,7 +138,7 @@ export default {
     this.tableData[0].lev = userInfo.lev;
     this.tableData[0].tel = userInfo.tel;
     this.tableData[0].age = userInfo.age;
-    this.tableData[0].createDate = userInfo.createDate;
+    this.tableData[0].createDate = moment(userInfo.createDate).format('YYYY-MM-DD');
     this.tableData[0].imgUrl = userInfo.imgUrl;
   },
   methods: {
