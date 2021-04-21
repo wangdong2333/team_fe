@@ -2,7 +2,7 @@
   <div class="wscn-http404-container">
     <div class="wscn-http404">
       <div class="pic-404">
-        <img class="pic-404__parent" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01e38d5a0ce1eba80121985c0e55c8.png%401280w_1l_2o_100sh.png&refer=http%3A%2F%2Fimg.zcool.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1621144144&t=8e75fadf70395cd6ba449d5a46fc70b0" alt="404">
+        <img class="pic-404__parent" src="@/assets/404_images/abc.jpeg" alt="404">
         <img class="pic-404__child left" src="@/assets/404_images/404_cloud.png" alt="404">
         <img class="pic-404__child mid" src="@/assets/404_images/404_cloud.png" alt="404">
         <img class="pic-404__child right" src="@/assets/404_images/404_cloud.png" alt="404">

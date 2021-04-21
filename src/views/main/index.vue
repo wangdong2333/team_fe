@@ -14,7 +14,7 @@
       <h3>现役成员</h3>
       <div>
         <div class="main_member_card" v-for="(item, index) in memberData" :key='index'>
-          <div class="pic">
+          <div class="pic" @click="godetail(item)">
             <img class="main_member_card_img" :src="item.imgUrl" v-if="item.imgUrl">
             <img class="main_member_card_img" v-if="!item.imgUrl" src="https://img2.baidu.com/it/u=2042214437,350526930&fm=26&fmt=auto&gp=0.jpg">
             <span class="label">{{ item.position }}</span>
@@ -51,6 +51,10 @@ export default {
       .catch(err => {
         console.log(err);
       });
+    },
+    godetail(item) {
+      console.log(item);
+      this.$router.push({path :'/personal', query: {item: JSON.stringify(item)}});
     }
   },
 };
