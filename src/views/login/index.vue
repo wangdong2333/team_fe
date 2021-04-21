@@ -137,7 +137,7 @@ export default {
           this.loginAction(res.data.userInfo);
           this.$router.push('/main/index')
         }else if (res.data.code === 201 ) {
-          this.$message.error('用户不存在');
+          this.$message.error('账号或密码错误');
         }
       });
 

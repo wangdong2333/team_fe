@@ -82,26 +82,37 @@ export default {
     },
     handleDelete(index, row) {
       // console.log(index, row);
-      axios({
-        url: 'http://localhost:3000/game/delGameList',
-        params: {
-          id: row._id
-        }
+      this.$confirm("此操作将永久删除此比赛信息, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
       })
-        .then(res => {
-          console.log(res);
-          if(res.data.code === 200) {
-            this.$message({
-              message: '删除成功',
-              type: 'success'
-            });
-            this.getList();
+        .then(() => {
+          axios({
+          url: 'http://localhost:3000/game/delGameList',
+          params: {
+            id: row._id
           }
+          }).then(res => {
+            if(res.data.code === 200) {
+              this.$message({
+                message: '删除成功',
+                type: 'success'
+              });
+              this.getList();
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
         })
-        .catch(err => {
-          console.log(err);
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
         });
-    },
+      },
     getVideo(row) {
       console.log(row)
       window.location.href = row.video;
