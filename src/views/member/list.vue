@@ -1,27 +1,42 @@
 <template>
-  <el-table :data="tableData" style="width: 100%">
-    <el-table-column type="index" width="150"> </el-table-column>
-    <el-table-column prop="name" label="姓名"> </el-table-column>
-    <el-table-column prop="age" sortable label="年龄"> </el-table-column>
-    <el-table-column prop="position" label="位置"> </el-table-column>
-    <el-table-column prop="lev" label="等级"> </el-table-column>
-    <el-table-column prop="tel" label="手机号"> </el-table-column>
-    <el-table-column prop="time" sortable label="加入战队时间">
-    </el-table-column>
-    <el-table-column label="操作" v-if="vip">
-      <template slot-scope="scope">
-        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
-          >编辑</el-button
-        >
-        <el-button
-          size="mini"
-          type="danger"
-          @click="handleDelete(scope.$index, scope.row)"
-          >删除</el-button
-        >
-      </template>
-    </el-table-column>
-  </el-table>
+  <div>
+    <el-input
+      class="search"
+      placeholder="按成员姓名进行搜索"
+      v-model="searchInfo"
+      clearable
+    >
+    </el-input>
+    <el-button type="primary" icon="el-icon-search" @click="search()"
+      >搜索</el-button
+    >
+    <el-table :data="tableData" style="width: 100%">
+      <el-table-column type="index" width="150"> </el-table-column>
+      <el-table-column prop="name" label="姓名"> </el-table-column>
+      <el-table-column prop="age" sortable label="年龄"> </el-table-column>
+      <el-table-column prop="position" label="位置"> </el-table-column>
+      <el-table-column prop="lev" label="等级"> </el-table-column>
+      <el-table-column prop="tel" label="手机号"> </el-table-column>
+      <el-table-column prop="time" sortable label="加入战队时间">
+      </el-table-column>
+      <el-table-column label="操作" v-if="vip">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="primary"
+            @click="handleEdit(scope.$index, scope.row)"
+            >编辑</el-button
+          >
+          <el-button
+            size="mini"
+            type="danger"
+            @click="handleDelete(scope.$index, scope.row)"
+            >删除</el-button
+          >
+        </template>
+      </el-table-column>
+    </el-table>
+  </div>
 </template>
 <script>
 import axios from "axios";
@@ -48,6 +63,7 @@ export default {
           age: "3",
         },
       ],
+      searchInfo: "",
     };
   },
   created() {
@@ -113,6 +129,44 @@ export default {
           console.log(err);
         });
     },
+    search() {
+      console.log(this.searchInfo);
+      if (this.searchInfo) {
+        axios({
+          url: "http://localhost:3000/teamList/searchMember",
+          params: {
+            name: this.searchInfo,
+          },
+        })
+          .then((res) => {
+            console.log(res);
+            if (Array.isArray(res.data)) {
+              res.data.forEach((item) => {
+                item.time = moment(item.time).format("YYYY-MM-DD");
+              });
+              this.tableData = res.data;
+            } else {
+              let data = [];
+              data.push(res.data);
+              data.forEach((item) => {
+                item.time = moment(item.time).format("YYYY-MM-DD");
+              });
+              this.tableData = data;
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        this.getList();
+      }
+    },
   },
 };
 </script>
+<style scoped>
+.search {
+  width: 200px;
+  margin: 10px;
+}
+</style>
