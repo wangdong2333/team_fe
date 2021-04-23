@@ -11,7 +11,7 @@
         <div class="enname">{{tableData[0].enname}}</div>
         <div class="chname">{{tableData[0].userName}}</div>
         <div class="detail">
-          工业园区管委会副主任兰浩通报了2011年全市安全生产情况，并安排部署了2012年安全生产重点工作。会议还表彰了2011年安全生产工作先进单位和先进个人。工业园区管委会副主任兰浩通报了2011年全市安全生产情况，并安排部署了2012年安全生产重点工作。会议还表彰了2011年安全生产工作先进单位和先进个人.
+          {{introduction ? introduction : "暂无简介"}}
         </div>
       </div>
     </div>
@@ -86,6 +86,8 @@
 <script>
 import { mapState } from "vuex";
 import moment from 'moment';
+import axios from 'axios';
+
 
 
 export default {
@@ -104,10 +106,12 @@ export default {
           edit: false
         },
       ],
+      introduction: ''
     };
   },
   created() {
     console.log(JSON.parse(this.$route.query.item));
+    this.getIntroduction();
   },
   mounted() {
     let userInfo = JSON.parse(this.$route.query.item);
@@ -120,6 +124,21 @@ export default {
     this.tableData[0].createDate = moment(userInfo.createDate).format('YYYY-MM-DD');
     this.tableData[0].imgUrl = userInfo.imgUrl;
   },
+  methods: {
+    getIntroduction() {
+      let userInfo = JSON.parse(this.$route.query.item);
+      axios({
+        url: "http://localhost:3000/introduction/getDetail",
+        method: "get",
+        params: {
+          name: userInfo.name,
+        },
+      }).then((res) =>{
+        console.log(res);
+        this.introduction = res.data.introduction;
+      })
+    }
+  }
 };
 </script>
 

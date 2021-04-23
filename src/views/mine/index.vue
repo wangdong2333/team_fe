@@ -11,7 +11,7 @@
         <div class="enname">{{tableData[0].enname}}</div>
         <div class="chname">{{tableData[0].userName}}</div>
         <div class="detail">
-          工业园区管委会副主任兰浩通报了2011年全市安全生产情况，并安排部署了2012年安全生产重点工作。会议还表彰了2011年安全生产工作先进单位和先进个人。工业园区管委会副主任兰浩通报了2011年全市安全生产情况，并安排部署了2012年安全生产重点工作。会议还表彰了2011年安全生产工作先进单位和先进个人.
+          {{ introduction }}
         </div>
       </div>
     </div>
@@ -106,7 +106,7 @@
 <script>
 import { mapState } from "vuex";
 import moment from 'moment';
-
+import axios from 'axios';
 
 export default {
   data() {
@@ -115,7 +115,7 @@ export default {
         {
           createDate: "2016-05-02",
           userName: "战神",
-          enname: "MingCheng",
+          enname: "BIIG",
           position: "上路",
           lev: "高级",
           tel: "18103605857",
@@ -124,10 +124,14 @@ export default {
           edit: false
         },
       ],
+      introduction: ''
     };
   },
   computed:{
-    ...mapState(["userInfo"]),
+    ...mapState(["userInfo"])
+  },
+  created() {
+    this.getIntroduction();
   },
   mounted() {
     console.log(localStorage.getItem('userInfo'), 'localStorage');
@@ -146,6 +150,19 @@ export default {
       console.log(scope.row);
       scope.row.edit = false;
       localStorage.setItem('userInfo', JSON.stringify(scope.row));
+    },
+    getIntroduction() {
+    let userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      axios({
+        url: "http://localhost:3000/introduction/getDetail",
+        method: "get",
+        params: {
+          name: userInfo.userName,
+        },
+      }).then((res) =>{
+        console.log(res);
+        this.introduction = res.data.introduction;
+      })
     }
   },
 };

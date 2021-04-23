@@ -73,12 +73,19 @@ export const constantRoutes = [
   {
     path: '/teamDate',
     component: Layout,
+    meta: { title: '数据分析', icon: 'form' },
     children: [
       {
         path: 'index',
         name: 'Date',
         component: () => import('@/views/teamDate/index'),
-        meta: { title: '数据分析', icon: 'form' }
+        meta: { title: '成员数据', icon: 'form' }
+      },
+      {
+        path: 'test',
+        name: 'Date',
+        component: () => import('@/views/teamDate/test'),
+        meta: { title: '比赛数据', icon: 'form' }
       }
     ]
   },

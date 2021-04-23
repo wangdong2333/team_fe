@@ -17,7 +17,7 @@
       <el-table-column prop="count" sortable label="出场次数" width="100">
       </el-table-column>
       <el-table-column prop="win" sortable label="胜率"> </el-table-column>
-      <el-table-column prop="win" sortable label="总击杀(场均)" width="150">
+      <el-table-column prop="kill" sortable label="总击杀(场均)" width="150">
       </el-table-column>
       <el-table-column prop="death" sortable label="总死亡(场均)" width="150">
       </el-table-column>

@@ -5,9 +5,9 @@
         <img src="https://img.crawler.qq.com/lolwebvideo/20190424151417/265633359ea7736f27a8ab91e1dd36f3/0">
       </div>
       <div class="main_content">
-        <div class="main_title">IG</div>
+        <div class="main_title">BIGG</div>
         <p>InvictusGaming</p>
-        <div class="main_text">InvictusGaming（简称：iG）成立于2011年，由王思聪先生创立，是国内最老牌的电竞俱乐部之一。作为国内建队最早的英雄联盟战队之一，iG.LOL拥有众多明星选手，实力与人气兼具，以敢打敢拼、永不屈服的风格获得粉丝喜爱。曾获得2013SWL冠军、2013IEM新加坡站冠军，2014年首届德玛西亚杯冠军，2016/2017全国电子竞技大赛冠军，2018德玛西亚杯冬季赛冠军，2019LPL春季赛冠军等荣誉。2018全球总决赛，iG为LPL赛区拿到第一座S赛奖杯，实现了广大国服玩家的八年冠军梦。</div>
+        <div class="main_text">BigInvictusGameGaming（简称：BIGG）成立于2011年，由王六六先生创立，是国内最老牌的电竞俱乐部之一。作为国内建队最早的英雄联盟战队之一，iG.LOL拥有众多明星选手，实力与人气兼具，以敢打敢拼、永不屈服的风格获得粉丝喜爱。曾获得2013SWL冠军、2013IEM新加坡站冠军，2014年首届德玛西亚杯冠军，2016/2017全国电子竞技大赛冠军，2018德玛西亚杯冬季赛冠军，2019LPL春季赛冠军等荣誉。2018全球总决赛，iG为LPL赛区拿到第一座S赛奖杯，实现了广大国服玩家的八年冠军梦。</div>
       </div>
     </div>
     <div class="main_member">

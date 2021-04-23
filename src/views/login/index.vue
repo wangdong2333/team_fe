@@ -133,6 +133,7 @@ export default {
               message: '登录成功',
               type: 'success'
             });
+            // console.log(res.data.userInfo);
           localStorage.setItem('userInfo',JSON.stringify(res.data.userInfo));
           this.loginAction(res.data.userInfo);
           this.$router.push('/main/index')
@@ -140,53 +141,6 @@ export default {
           this.$message.error('账号或密码错误');
         }
       });
-
-      // this.getUserInfo();
-
-      // this.$router.push('/a')
-      // this.$refs.loginForm.validate(valid => {
-      //   if (valid) {
-      //     this.loading = true
-      //     this.$store.dispatch('user/login', this.loginForm).then(() => {
-      //       this.$router.push({ path: this.redirect || '/' })
-      //       this.loading = false
-      //     }).catch(() => {
-      //       this.loading = false
-      //     })
-      //   } else {
-      //     console.log('error submit!!')
-      //     return false
-      //   }
-      // })
-
-      // this.$refs.loginForm.validate((valid) => {
-      //   if (valid) {
-      //     this.loading = true;
-      //     login(this.loginForm).then((res) => {
-      //       if (res.data.code === 200) {
-      //         this.$message({
-      //           message: res.data.message,
-      //           type: "success",
-      //         });
-      //         localStorage.setItem(
-      //           "token",
-      //           res.data.data.tokenHead + res.data.data.token
-      //         );
-      //         this.getUserInfo();
-      //       } else {
-      //         this.$message({
-      //           message: res.data.message,
-      //           type: "error",
-      //         });
-      //       }
-
-      //       this.loading = false;
-      //     });
-      //   } else {
-      //     console.log("error submit!!");
-      //     return false;
-      //   }
-      // });
     },
     getUserInfo() {
       getInfo().then((res) => {
