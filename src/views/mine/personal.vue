@@ -8,7 +8,7 @@
         />
       </div>
       <div>
-        <div class="enname">{{tableData[0].enname}}</div>
+        <div class="enname">{{targetTeam}}</div>
         <div class="chname">{{tableData[0].userName}}</div>
         <div class="detail">
           {{introduction ? introduction : "暂无简介"}}
@@ -67,6 +67,16 @@
           <span v-show="!scope.row.edit">{{ scope.row.tel }}</span>
         </template>
       </el-table-column>
+      <el-table-column min-width="100px" label="原战队">
+        <template scope="scope">
+          <el-input
+            v-show="scope.row.edit"
+            size="small"
+            v-model="scope.row.oldTeam"
+          ></el-input>
+          <span v-show="!scope.row.edit">{{ scope.row.oldTeam }}</span>
+        </template>
+      </el-table-column>
       <!-- <el-table-column prop="date" sortable label="加入战队时间"> -->
 
       <el-table-column min-width="100px" label="加入战队时间">
@@ -103,13 +113,16 @@ export default {
           tel: "18103605857",
           age: "19",
           imgUrl: "",
+          oldTeam: "",
           edit: false
         },
       ],
-      introduction: ''
+      introduction: '',
+      targetTeam: ''
     };
   },
   created() {
+    this.targetTeam = localStorage.getItem("targetTeam");
     console.log(JSON.parse(this.$route.query.item));
     this.getIntroduction();
   },
@@ -121,6 +134,7 @@ export default {
     this.tableData[0].lev = userInfo.lev;
     this.tableData[0].tel = userInfo.tel;
     this.tableData[0].age = userInfo.age;
+    this.tableData[0].oldTeam = userInfo.oldTeam ? userInfo.oldTeam : '暂无';
     this.tableData[0].createDate = moment(userInfo.createDate).format('YYYY-MM-DD');
     this.tableData[0].imgUrl = userInfo.imgUrl;
   },

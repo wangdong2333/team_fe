@@ -39,6 +39,16 @@
             auto-complete="on"
           />
         </el-form-item>
+        <el-form-item label="游戏" prop="gameName">
+          <el-input
+            ref="gameName"
+            v-model="ruleForm.gameName"
+            placeholder="gameName"
+            name="gameName"
+            tabindex="2"
+            auto-complete="on"
+          />
+        </el-form-item>
         <el-form-item label="等级" prop="lev ">
           <el-select class="lev" v-model="ruleForm.lev" placeholder="请选择">
             <el-option
@@ -50,6 +60,7 @@
             </el-option>
           </el-select>
         </el-form-item>
+        
         <el-form-item label="位置" prop="position ">
           <el-select
             class="position"
@@ -79,8 +90,9 @@
             action="#"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload">
-            <img v-if="ruleForm.imgUrl" :src="ruleForm.imgUrl" class="avatar">
+            :before-upload="beforeAvatarUpload"
+          >
+            <img v-if="ruleForm.imgUrl" :src="ruleForm.imgUrl" class="avatar" />
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
@@ -99,7 +111,7 @@
       </el-form>
     </div>
     <div v-else>
-      <Permission/>
+      <Permission />
     </div>
   </div>
 </template>
@@ -108,11 +120,11 @@ import { levelList } from "@/api/level";
 import { addressList } from "@/api/address";
 import { messageAdd, messageById, updataMessage } from "@/api/message";
 import axios from "axios";
-import Permission from '../permission'
+import Permission from "../permission";
 
 export default {
   components: {
-    Permission
+    Permission,
   },
   data() {
     return {
@@ -161,7 +173,8 @@ export default {
         lev: "",
         position: "",
         time: "",
-        imgUrl: ""
+        imgUrl: "",
+        gameName: "",
       },
       rules: {
         username: [
@@ -174,25 +187,41 @@ export default {
           { required: true, message: "请选择位置", trigger: "change" },
         ],
       },
+      targetTeam: "",
     };
   },
   created() {
     console.log(this.$route.query.id);
-    let userData = JSON.parse(localStorage.getItem('userInfo'));
-    console.log(userData)
-    if(userData.vip === '团队成员') {
-        this.vip = false;
+    this.targetTeam = localStorage.getItem("targetTeam");
+    console.log(this.targetTeam);
+    let userData = JSON.parse(localStorage.getItem("userInfo"));
+    if (userData.vip === "团队成员") {
+      this.vip = false;
     }
     if (this.$route.query.id) {
       this.updataInit(this.$route.query.id);
     }
   },
   methods: {
+    getTeam(oldTeam) {
+      if (oldTeam === "IG") {
+        oldTeam = "teamList";
+      } else if (oldTeam === "LGD") {
+        oldTeam = "ladTeam";
+      } else if (oldTeam === "V5") {
+        oldTeam = "v5Team";
+      }
+      return oldTeam;
+    },
     // 修改初始化
     updataInit(id) {
       this.isUpdata = true;
+      let team = this.getTeam(this.targetTeam);
+      this.updata(id, team);
+    },
+    updata(id, team) {
       axios({
-        url: "http://localhost:3000/teamList/getDetail",
+        url: `http://localhost:3000/${team}/getDetail`,
         method: "get",
         params: {
           id: id,
@@ -208,7 +237,9 @@ export default {
             lev: _data.lev,
             position: _data.position,
             time: _data.time,
-            imgUrl: _data.imgUrl
+            imgUrl: _data.imgUrl,
+            gameName: _data.gameName,
+            
           };
         })
         .catch((err) => {
@@ -217,8 +248,12 @@ export default {
     },
     // 提交修改
     updataForm(formName) {
+      let team = this.getTeam(this.targetTeam);
+      this.form(team);
+    },
+    form(team) {
       axios({
-        url: "http://localhost:3000/teamList/updateTeamList",
+        url: `http://localhost:3000/${team}/updateTeamList`,
         method: "post",
         params: {
           id: this.$route.query.id,
@@ -231,6 +266,7 @@ export default {
           position: this.ruleForm.position,
           time: this.ruleForm.time,
           imgUrl: this.ruleForm.imgUrl,
+          gameName: this.ruleForm.gameName,
         },
       }).then((res) => {
         console.log(res);
@@ -246,9 +282,13 @@ export default {
     },
     // 提交操作
     submitForm(formName) {
-      console.log(this.ruleForm);
+      // console.log(this.ruleForm);
+      let team = this.getTeam(this.targetTeam);
+      this.submit(team);
+    },
+    submit(team) {
       axios({
-        url: "http://localhost:3000/teamList/addTeamList",
+        url: `http://localhost:3000/${team}/addTeamList`,
         method: "post",
         data: {
           name: this.ruleForm.username,
@@ -258,6 +298,8 @@ export default {
           position: this.ruleForm.position,
           time: this.ruleForm.time,
           imgUrl: this.ruleForm.imgUrl,
+          gameName: this.ruleForm.gameName,
+
         },
       })
         .then((res) => {
@@ -280,30 +322,31 @@ export default {
       this.$refs[formName].resetFields();
     },
     handleAvatarSuccess(res, file) {
-      console.log('111')
+      console.log("111");
     },
     beforeAvatarUpload(file) {
       const formData = new FormData();
-      formData.append('file', file);
-      formData.append('dir', 'wangdong');
+      formData.append("file", file);
+      formData.append("dir", "wangdong");
       axios({
         url: "http://121.196.167.117:8085/file/uploadFile",
         method: "post",
-        data: formData
-      }).then((res) => {
-        console.log(res);
-        this.ruleForm.imgUrl = "http://121.196.167.117:8085/" + res.data.data;
-        console
-        this.$message({
-          type: "success",
-          message: "上传成功!",
-          duration: 1000,
-        });
+        data: formData,
       })
-      .catch((e) => {
-        console.log(e);
-      });
-    }
+        .then((res) => {
+          console.log(res);
+          this.ruleForm.imgUrl = "http://121.196.167.117:8085/" + res.data.data;
+          console;
+          this.$message({
+            type: "success",
+            message: "上传成功!",
+            duration: 1000,
+          });
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
   },
 };
 </script>
@@ -313,26 +356,26 @@ export default {
   margin: 50px auto;
 }
 .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-  }
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
 </style>

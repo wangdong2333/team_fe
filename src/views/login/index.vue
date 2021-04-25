@@ -118,7 +118,6 @@ export default {
       this.$router.push(`/register`);
     },
     async handleLogin() {
-      console.log(this.loginForm);
       axios({
           url: 'http://localhost:3000/user/loginUser',
           method: "post",
@@ -127,16 +126,21 @@ export default {
             password: this.loginForm.password,
           }
       }).then((res) =>{
-        console.log(res);
         if(res.data.code === 200 ) {
            this.$message({
               message: '登录成功',
               type: 'success'
             });
-            // console.log(res.data.userInfo);
           localStorage.setItem('userInfo',JSON.stringify(res.data.userInfo));
           this.loginAction(res.data.userInfo);
-          this.$router.push('/main/index')
+          if (res.data.userInfo.vip === "超级管理员") {
+            this.$router.push('/super');
+            
+          } else {
+            let targetTeam = JSON.parse(localStorage.getItem('userInfo'));
+            localStorage.setItem('targetTeam', targetTeam.team);
+            this.$router.push('/main/index')
+          }
         }else if (res.data.code === 201 ) {
           this.$message.error('账号或密码错误');
         }

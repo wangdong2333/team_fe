@@ -82,9 +82,11 @@ export default {
         },
       ],
       searchInfo: "",
+      targetTeam: ""
     };
   },
   created() {
+    this.targetTeam = localStorage.getItem("targetTeam");
     this.getList();
     let userData = JSON.parse(localStorage.getItem("userInfo"));
     console.log(userData);
@@ -93,6 +95,16 @@ export default {
     }
   },
   methods: {
+    getTeam(oldTeam) {
+      if (oldTeam === "IG") {
+        oldTeam = "game";
+      } else if (oldTeam === "LGD") {
+        oldTeam = "ladGame";
+      } else if (oldTeam === "V5") {
+        oldTeam = "v5Game";
+      }
+      return oldTeam;
+    },
     handleEdit(index, row) {
       this.$router.push({ path: "/game/add", query: { id: row._id } });
     },
@@ -104,8 +116,9 @@ export default {
         type: "warning",
       })
         .then(() => {
+          let team = this.getTeam(this.targetTeam);
           axios({
-            url: "http://localhost:3000/game/delGameList",
+            url: `http://localhost:3000/${team}/delGameList`,
             params: {
               id: row._id,
             },
@@ -131,12 +144,13 @@ export default {
         });
     },
     getVideo(row) {
-      console.log(row);
       window.location.href = row.video;
     },
     getList() {
+      let team = this.getTeam(this.targetTeam);
+      console.log(team);
       axios({
-        url: "http://localhost:3000/game/getGameList",
+        url: `http://localhost:3000/${team}/getGameList`,
       })
         .then((res) => {
           console.log(res);
@@ -149,8 +163,9 @@ export default {
     search() {
       console.log(this.searchInfo);
       if (this.searchInfo) {
+        let team = this.getTeam(this.targetTeam);
         axios({
-          url: "http://localhost:3000/game/searchGame",
+          url: `http://localhost:3000/${team}/searchGame`,
           params: {
             name: this.searchInfo,
           },

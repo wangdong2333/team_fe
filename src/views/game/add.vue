@@ -176,10 +176,11 @@ export default {
         ],
         count: [{ required: true, message: "请输入出场次数", trigger: "blur" }],
       },
+      targetTeam:''
     };
   },
   created() {
-    console.log(this.$route.query.id);
+    this.targetTeam = localStorage.getItem("targetTeam");
     let userData = JSON.parse(localStorage.getItem("userInfo"));
     console.log(userData);
     if (userData.vip === "团队成员") {
@@ -190,11 +191,22 @@ export default {
     }
   },
   methods: {
+    getTeam(oldTeam) {
+      if (oldTeam === "IG") {
+        oldTeam = "game";
+      } else if (oldTeam === "LGD") {
+        oldTeam = "ladGame";
+      } else if (oldTeam === "V5") {
+        oldTeam = "v5Game";
+      }
+      return oldTeam;
+    },
     // 修改初始化
     updataInit(id) {
       this.isUpdata = true;
+      let team = this.getTeam(this.targetTeam);
       axios({
-        url: "http://localhost:3000/game/getDetail",
+        url: `http://localhost:3000/${team}/getDetail`,
         method: "get",
         params: {
           id: id,
@@ -222,8 +234,9 @@ export default {
     },
     // 提交修改
     updataForm(formName) {
+      let team = this.getTeam(this.targetTeam);
       axios({
-        url: "http://localhost:3000/game/updateGameList",
+        url: `http://localhost:3000/${team}/updateGameList`,
         method: "post",
         params: {
           id: this.$route.query.id,
@@ -254,9 +267,9 @@ export default {
     },
     // 提交操作
     submitForm(formName) {
-      console.log(this.ruleForm.putEye);
+      let team = this.getTeam(this.targetTeam);
       axios({
-        url: "http://localhost:3000/game/addGameList",
+        url: `http://localhost:3000/${team}/addGameList`,
         method: "post",
         data: {
           name: this.ruleForm.name,

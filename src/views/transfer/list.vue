@@ -14,7 +14,9 @@
       <el-table-column type="index" width="100"> </el-table-column>
       <el-table-column prop="name" label="姓名"> </el-table-column>
       <el-table-column prop="oldTeam" label="原战队"> </el-table-column>
+      <el-table-column prop="newTeam" label="转会战队"> </el-table-column>
       <el-table-column prop="time" sortable label="转会时间"> </el-table-column>
+      <el-table-column prop="status" label="转会状态"> </el-table-column>
       <el-table-column label="操作" width="150" v-if="vip">
         <template slot-scope="scope">
           <el-button
@@ -106,6 +108,7 @@ export default {
         .then((res) => {
           console.log(res);
           res.data.forEach((item) => {
+            item.status = this.getStatus(item.status);
             item.time = moment(item.time).format("YYYY-MM-DD");
           });
           this.tableData = res.data;
@@ -124,7 +127,6 @@ export default {
           },
         })
           .then((res) => {
-            console.log(res);
             if (Array.isArray(res.data)) {
               res.data.forEach((item) => {
                 item.time = moment(item.time).format("YYYY-MM-DD");
@@ -138,6 +140,7 @@ export default {
               });
               this.tableData = data;
             }
+
           })
           .catch((err) => {
             console.log(err);
@@ -146,6 +149,16 @@ export default {
         this.getList();
       }
     },
+    getStatus(status) {
+      if(status === '0' ){
+        status =  '转会中,待处理...';
+      } else if(status === '-1'){
+        status =  '已驳回';
+      } else if(status === '1') {
+        status =  '已完成';
+      }
+      return status;
+    }
   },
 };
 </script>

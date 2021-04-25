@@ -134,7 +134,6 @@ export default {
     this.getIntroduction();
   },
   mounted() {
-    console.log(localStorage.getItem('userInfo'), 'localStorage');
     let userInfo = JSON.parse(localStorage.getItem('userInfo'));
     console.log(userInfo.userName);
     this.tableData[0].userName = userInfo.userName;

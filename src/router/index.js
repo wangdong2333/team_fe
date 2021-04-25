@@ -57,7 +57,16 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/main/index',
   },
-
+  {
+    path: '/super',
+    component: () => import('@/views/super/index'),
+    hidden: true
+  },
+  {
+    path: '/superTransfer',
+    component: () => import('@/views/superTransfer/index'),
+    hidden: true
+  },
   {
     path: '/main',
     component: Layout,
@@ -151,6 +160,7 @@ export const constantRoutes = [
         path: 'add',
         name: 'TransferAdd',
         component: () => import('@/views/transfer/add'),
+        hidden: true,
         meta: { title: '添加转会', icon: 'form' }
       }
     ]

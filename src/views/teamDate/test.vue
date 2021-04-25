@@ -104,23 +104,36 @@ export default {
           },
         ],
       },
+      targetTeam:''
     };
   },
   mounted() {
     // this.drawLine();
   },
   created() {
+    this.targetTeam = localStorage.getItem("targetTeam");
     this.getList();
   },
   methods: {
+    getTeam(oldTeam) {
+      if (oldTeam === "IG") {
+        oldTeam = "game";
+      } else if (oldTeam === "LGD") {
+        oldTeam = "ladGame";
+      } else if (oldTeam === "V5") {
+        oldTeam = "v5Game";
+      }
+      return oldTeam;
+    },
     drawLine() {
       var chartDom = document.getElementById("myChart");
       var myChart = echarts.init(chartDom, "dark");
       this.option && myChart.setOption(this.option);
     },
     getList() {
+      let team = this.getTeam(this.targetTeam);
       axios({
-        url: "http://localhost:3000/game/getGameList",
+        url: `http://localhost:3000/${team}/getGameList`,
       })
         .then((res) => {
           console.log(res);

@@ -6,12 +6,12 @@
 
 <script>
 import * as echarts from "echarts";
-import axios from 'axios';
+import axios from "axios";
 export default {
   name: "hello",
   data() {
     return {
-      option : {
+      option: {
         tooltip: {
           trigger: "axis",
           axisPointer: {
@@ -48,9 +48,9 @@ export default {
             axisPointer: {
               type: "shadow",
             },
-            axisLabel :{  
-                interval:0 
-            } 
+            axisLabel: {
+              interval: 0,
+            },
           },
         ],
         yAxis: [
@@ -87,7 +87,7 @@ export default {
               5.2,
               7.9,
               5.3,
-              3.7,  
+              3.7,
               1.7,
               8.4,
               3.8,
@@ -95,90 +95,102 @@ export default {
               5.2,
               7.9,
               5.3,
-              3.7, 
+              3.7,
             ],
           },
           {
             name: "场均死亡数量",
             type: "bar",
-            data: [
-              5,
-              7,
-              7,
-              9,
-              3,
-              13,
-              6,
-              8,  
-              5,
-              7,
-              7,
-              9,
-              3,
-              13,
-              6,
-              8,  
-            ],
+            data: [5, 7, 7, 9, 3, 13, 6, 8, 5, 7, 7, 9, 3, 13, 6, 8],
           },
           {
             name: "上场次数",
             type: "line",
             yAxisIndex: 1,
-            data: [
-              13,
-              5,
-              10,
-              18,
-              21,
-              9,
-              7,
-              17,
-              13,
-              5,
-              10,
-              18,
-              21,
-              9,
-              7,
-              17,  
-            ],
+            data: [13, 5, 10, 18, 21, 9, 7, 17, 13, 5, 10, 18, 21, 9, 7, 17],
           },
         ],
-      }
+      },
+      targetTeam: "",
     };
   },
   mounted() {
     // this.drawLine();
   },
   created() {
+    this.targetTeam = localStorage.getItem("targetTeam");
     this.getList();
   },
   methods: {
+    getTeam(oldTeam) {
+      if (oldTeam === "IG") {
+        oldTeam = "teamList";
+      } else if (oldTeam === "LGD") {
+        oldTeam = "ladTeam";
+      } else if (oldTeam === "V5") {
+        oldTeam = "v5Team";
+      }
+      return oldTeam;
+    },
     drawLine() {
       var chartDom = document.getElementById("myChart");
-      var myChart = echarts.init(chartDom, "dark"); 
+      var myChart = echarts.init(chartDom, "dark");
       this.option && myChart.setOption(this.option);
     },
     getList() {
-      axios({
-        url: 'http://localhost:3000/teamList/getTeamList'
-      })
-      .then(res => {
-        console.log(res);
-        let targetName = [];
-        res.data.forEach((item, index) =>{
-          targetName.push(item.name);
+      if (this.targetTeam === "IG") {
+        axios({
+          url: "http://localhost:3000/teamList/getTeamList",
         })
-        console.log(this.option.xAxis[0].data,'this.option.xAxis[0].data')
+          .then((res) => {
+            console.log(res);
+            let targetName = [];
+            res.data.forEach((item, index) => {
+              targetName.push(item.name);
+            });
+            console.log(this.option.xAxis[0].data, "this.option.xAxis[0].data");
 
-        this.option.xAxis[0].data = targetName;
-        console.log(this.option.xAxis[0].data,'this.option.xAxis[0].data')
-        this.drawLine();
-      })
-      .catch(err => {
-        console.log(err);
-      });
-    }
+            this.option.xAxis[0].data = targetName;
+            console.log(this.option.xAxis[0].data, "this.option.xAxis[0].data");
+            this.drawLine();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }else if (this.targetTeam === "LGD") {
+        axios({
+          url: "http://localhost:3000/ladTeam/getLgdTeam",
+        })
+          .then((res) => {
+            console.log(res);
+            let targetName = [];
+            res.data.forEach((item, index) => {
+              targetName.push(item.name);
+            });
+            this.option.xAxis[0].data = targetName;
+            this.drawLine();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }else if (this.targetTeam === "V5") {
+        axios({
+          url: "http://localhost:3000/V5Team/getV5Team",
+        })
+          .then((res) => {
+            console.log(res);
+            let targetName = [];
+            res.data.forEach((item, index) => {
+              targetName.push(item.name);
+            });
+            this.option.xAxis[0].data = targetName;
+            this.drawLine();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
   },
 };
 </script>

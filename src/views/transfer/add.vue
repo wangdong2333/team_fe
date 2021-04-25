@@ -29,6 +29,17 @@
             auto-complete="on"
           />
         </el-form-item>
+        <el-form-item label="转会战队" prop="newTeam">
+          <el-input
+            ref="newTeam"
+            v-model="ruleForm.newTeam"
+            placeholder="newTeam"
+            name="newTeam"
+            type="text"
+            tabindex="1"
+            auto-complete="on"
+          />
+        </el-form-item>
         <el-form-item label="选择日期" prop="time">
           <el-date-picker
             v-model="ruleForm.time"
@@ -72,10 +83,12 @@ export default {
         username: "",
         oldTeam: "",
         time: "",
+        newTeam: ''
       },
       rules: {
         username: [{ required: true, message: "请输入姓名", trigger: "blur" }],
         oldTeam: [{ required: true, message: "请输入原战队", trigger: "blur" }],
+        newTeam: [{ required: true, message: "请输入新战队", trigger: "blur" }],
       },
     };
   },
@@ -106,6 +119,7 @@ export default {
           this.ruleForm = {
             username: _data.name,
             oldTeam: _data.oldTeam,
+            newTeam: _data.newTeam,
             time: _data.time,
           };
         })
@@ -124,6 +138,7 @@ export default {
         data: {
           name: this.ruleForm.username,
           oldTeam: this.ruleForm.oldTeam,
+          newTeam: this.ruleForm.newTeam,
           time: this.ruleForm.time
         }
       }).then(res => {
@@ -147,6 +162,7 @@ export default {
         data: {
           name: this.ruleForm.username,
           oldTeam: this.ruleForm.oldTeam,
+          newTeam: this.ruleForm.newTeam,
           time: this.ruleForm.time
         }
       }).then(res => {

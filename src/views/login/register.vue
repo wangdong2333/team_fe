@@ -109,6 +109,20 @@
               </el-option>
             </el-select>
       </el-form-item>
+      <el-form-item prop="team">
+        <span class="svg-container">
+          战队：
+        </span>
+         <el-select class="team" v-model="loginForm.team" placeholder="请选择">
+              <el-option
+                v-for="item in teamOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+      </el-form-item>
       <el-form-item prop="imgUrl" class="img">
           <span class="svg-container">
             <svg-icon icon-class="user" />
@@ -150,8 +164,8 @@ export default {
           lable: '团队管理员'
         },
         {
-          value: '团队成员',
-          lable: '团队成员'
+          value: '超级管理员',
+          lable: '超级管理员'
         }
       ],
       positionOptions:[{
@@ -182,6 +196,18 @@ export default {
         lable:'高级'
       },
       ],
+      teamOptions:[
+        {
+        value:'IG',
+        lable:'IG'
+      },{
+        value:'LGD',
+        lable:'LGD'
+      },{
+        value:'V5',
+        lable:'V%'
+      },
+      ],
       loginForm: {
         username: "",
         password: "",
@@ -190,7 +216,8 @@ export default {
         lev: "",
         position: "",
         vip: "",
-        imgUrl: ""
+        imgUrl: "",
+        team: ""
       },
       loginRules: {
         username: [{ required: true, trigger: "blur" }],
@@ -231,6 +258,7 @@ export default {
             tel: this.loginForm.tel,
             age: this.loginForm.age,
             lev: this.loginForm.lev,
+            team: this.loginForm.team,
             position: this.loginForm.position,
             vip: this.loginForm.vip,
             imgUrl: this.loginForm.imgUrl
